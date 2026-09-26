@@ -1,4 +1,4 @@
-import {getProperties} from '@/lib/airtable';
+import {getProperties} from '@/lib/property-store';
 import {PropertyBrowser} from '@/components/property-browser';
 export const metadata={title:'Properties'};
 export const dynamic='force-dynamic';

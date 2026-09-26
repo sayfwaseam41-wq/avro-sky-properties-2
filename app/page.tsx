@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {site} from '@/config/site';
-import {getProperties} from '@/lib/airtable';
+import {getProperties} from '@/lib/property-store';
 import {featuredProperties} from '@/lib/property';
 import {PropertyCard} from '@/components/property-card';
 

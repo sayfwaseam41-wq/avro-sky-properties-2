@@ -3,7 +3,7 @@
 import {revalidatePath} from 'next/cache';
 import {redirect} from 'next/navigation';
 import {endAdminSession,requireAdmin,startAdminSession} from '@/lib/admin-auth';
-import {createProperty,deleteProperty,updateProperty} from '@/lib/airtable';
+import {createProperty,deleteProperty,updateProperty} from '@/lib/property-store';
 
 export type ActionState={error?:string};
 const badCredentials={error:'The password is not correct.'};

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {AdminDashboard} from '@/components/admin-dashboard';
 import {AdminLoginForm} from '@/components/admin-login-form';
 import {isAdmin} from '@/lib/admin-auth';
-import {getAllProperties} from '@/lib/airtable';
+import {getAllProperties} from '@/lib/property-store';
 import {login,logout} from './actions';
 
 export const metadata={title:'Admin'};

@@ -6,7 +6,3 @@ export function filterProperties(properties:Property[], f:Filters) {
   return properties.filter(p=>(!f.area || p.area===f.area) && (!f.type || p.type===f.type) && (!f.listingType || p.listingType===f.listingType) && (!f.minPrice || p.price>=Number(f.minPrice)) && (!f.maxPrice || p.price<=Number(f.maxPrice)) && (!f.bedrooms || (f.bedrooms==='4+' ? p.bedrooms>=4 : p.bedrooms===Number(f.bedrooms))));
 }
 export function featuredProperties(properties:Property[]) { const featured=properties.filter(p=>p.featured); return (featured.length?featured:properties).slice(0,6); }
-export function publicFormula(now = new Date()) {
-  const cutoff = new Date(now.getTime()-7*24*60*60*1000).toISOString();
-  return `OR({Status}='Available',{Status}='Reserved',AND({Status}='Rented',IS_AFTER(IF(LAST_MODIFIED_TIME({Status}),LAST_MODIFIED_TIME({Status}),CREATED_TIME()),DATETIME_PARSE('${cutoff}'))))`;
-}

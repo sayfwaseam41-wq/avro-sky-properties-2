@@ -11,8 +11,6 @@ export const site = {
   instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || '',
   address: 'Duhok, Kurdistan Region, Iraq',
   email: process.env.COMPANY_EMAIL || 'sayfwaseam41@gmail.com',
-  airtableBaseId: process.env.AIRTABLE_BASE_ID || 'appqc7Oq3PYBXqBn4',
-  airtableTableName: process.env.AIRTABLE_TABLE_NAME || 'Properties',
   emailFrom: process.env.RESEND_FROM_EMAIL || 'Avro Sky <onboarding@resend.dev>',
   currency: 'USD',
   locale: 'en-US',
