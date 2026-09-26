@@ -1,5 +1,5 @@
 export const propertyTypes = ['Apartment','House','Villa','Land','Office'] as const;
-export type Property = { id: string; title:string; type:typeof propertyTypes[number]; listingType:'For Rent'|'For Sale'; price:number; bedrooms:number; bathrooms:number; size:number; area:string; status:'Available'|'Reserved'|'Rented'; description:string; photos:{url:string;alt:string}[]; featured:boolean; dateListed:string };
+export type Property = { id: string; title:string; type:typeof propertyTypes[number]; listingType:'For Rent'|'For Sale'; price:number; bedrooms:number; bathrooms:number; size:number; area:string; status:'Available'|'Reserved'|'Rented'|'Sold'|'Off Market'; description:string; photos:{url:string;alt:string}[]; featured:boolean; dateListed:string; isPublic?:boolean; ownershipKind?:'Company Owned'|'Client Listed'; ownerClientId?:string|null; assignedAgentId?:string|null };
 export type Filters = {area:string; type?:string; listingType:string; minPrice:string; maxPrice:string; bedrooms:string};
 export const emptyFilters: Filters = {area:'',type:'',listingType:'',minPrice:'',maxPrice:'',bedrooms:''};
 export function filterProperties(properties:Property[], f:Filters) {

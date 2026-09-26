@@ -9,8 +9,8 @@ export type ActionState={error?:string};
 const badCredentials={error:'The password is not correct.'};
 
 export async function login(_:ActionState,formData:FormData):Promise<ActionState>{
-  const password=String(formData.get('password')||'');
-  if(!await startAdminSession(password)) return badCredentials;
+  const password=String(formData.get('password')||'');const email=String(formData.get('email')||'');
+  if(!await startAdminSession(email,password)) return badCredentials;
   redirect('/admin');
 }
 
