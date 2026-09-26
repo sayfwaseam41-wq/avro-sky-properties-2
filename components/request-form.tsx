@@ -125,6 +125,9 @@ export function RequestForm() {
           like a faster response.
         </p>
         <div className="success-actions">
+          <Link href="/properties" className="button secondary-dark">
+            Browse available properties
+          </Link>
           <a
             className="button"
             target="_blank"
