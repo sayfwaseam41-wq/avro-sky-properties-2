@@ -1,8 +1,11 @@
 import {NextResponse} from 'next/server';
 import {site} from '@/config/site';
 import {leadSchema,leadSummary} from '@/lib/lead';
+import {isRateLimited} from '@/lib/rate-limit';
 export const runtime='nodejs';
 export async function POST(request:Request){
+ const address=request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()||'unknown';
+ if(isRateLimited(`property-request:${address}`,8,15*60*1000))return NextResponse.json({error:'Too many requests. Please try again later.'},{status:429});
  let raw:unknown;
  try{raw=await request.json();}catch{return NextResponse.json({error:'Invalid request.'},{status:400});}
  const parsed=leadSchema.safeParse(raw);
