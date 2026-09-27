@@ -21,7 +21,7 @@ export async function isAdmin(){
 export async function startAdminSession(email:string,password:string){
   const staff=await findStaff(email);if(!staff||!staff.active||!await passwordMatches(password,staff.password_hash))return false;
   const data:Session={id:staff.id,role:staff.role,expires:Date.now()+1000*60*60*12};const encoded=Buffer.from(JSON.stringify(data)).toString('base64url');
-  (await cookies()).set(cookieName,`${encoded}.${signature(encoded)}`,{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/admin',expires:new Date(data.expires)});
+  (await cookies()).set(cookieName,`${encoded}.${signature(encoded)}`,{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/',expires:new Date(data.expires)});
   return true;
 }
 

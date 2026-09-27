@@ -6,12 +6,13 @@ import {endAdminSession,requireAdmin,startAdminSession} from '@/lib/admin-auth';
 import {createProperty,deleteProperty,updateProperty} from '@/lib/property-store';
 
 export type ActionState={error?:string};
-const badCredentials={error:'The password is not correct.'};
+const badCredentials={error:'Email or password is not correct.'};
 
 export async function login(_:ActionState,formData:FormData):Promise<ActionState>{
   const password=String(formData.get('password')||'');const email=String(formData.get('email')||'');
   if(!await startAdminSession(email,password)) return badCredentials;
-  redirect('/admin');
+  const next=String(formData.get('next')||'/admin');
+  redirect(next==='/admin-basic'||next==='/admin-pro'?next:'/admin');
 }
 
 export async function logout(){await endAdminSession();redirect('/admin');}
