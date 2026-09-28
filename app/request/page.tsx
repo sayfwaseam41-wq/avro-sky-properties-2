@@ -1,4 +1,0 @@
-import {RequestForm} from '@/components/request-form';
-import {site,whatsappLink} from '@/config/site';
-export const metadata={title:'Request a property'};
-export default function RequestPage(){return <section className="shell request-layout"><div className="request-intro"><p className="kicker">We’ll help you look</p><h1>Tell us what you need.</h1><p>Share the essentials. Our team will review your request and get in touch with suitable options.</p><div className="contact-note"><strong>Prefer to talk now?</strong><p><a className="text-link" href={whatsappLink(`Hello ${site.name}, I’m looking for a property.`)} target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a></p><p><a href={`tel:${site.phone}`}>{site.phone}</a><br/><a href={`mailto:${site.email}`}>{site.email}</a></p></div></div><RequestForm/></section>}
