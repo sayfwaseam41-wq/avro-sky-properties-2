@@ -9,9 +9,9 @@ export function localePath(lang:Lang,path:string){
   if(lang===defaultLang)return path;
   return path==='/'?`/${lang}`:`/${lang}${path}`;
 }
-/** Removes the language prefix from a browser path: /ar/properties -> /properties */
+/** Removes a language prefix from a path: /ar/properties -> /properties. English pages are prerendered under /en, so that prefix is removed too. */
 export function stripLang(path:string){
-  for(const lang of langs)if(lang!==defaultLang&&(path===`/${lang}`||path.startsWith(`/${lang}/`)))return path.slice(lang.length+1)||'/';
+  for(const lang of langs)if(path===`/${lang}`||path.startsWith(`/${lang}/`))return path.slice(lang.length+1)||'/';
   return path;
 }
 /** Fills {name} placeholders in a translated string. */
