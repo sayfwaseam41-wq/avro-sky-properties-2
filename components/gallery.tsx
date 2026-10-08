@@ -1,5 +1,24 @@
 'use client';
 import {useState} from 'react';
 import Image from 'next/image';
-import {ChevronLeft,ChevronRight} from 'lucide-react';
-export function Gallery({photos}:{photos:{url:string;alt:string}[]}){const [active,setActive]=useState(0);const go=(delta:number)=>setActive(a=>(a+delta+photos.length)%photos.length);if(!photos.length)return <div className="empty-state">Photography coming soon</div>;return <section className="gallery" aria-label="Property photographs" onKeyDown={e=>{if(e.key==='ArrowRight'){e.preventDefault();go(1);}if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}}}><div className="gallery-main"><Image src={photos[active].url} alt={photos[active].alt} fill priority sizes="(max-width:760px) 100vw, 1200px"/>{photos.length>1&&<div className="gallery-controls"><button onClick={()=>go(-1)} aria-label="Previous photo"><ChevronLeft size={20}/></button><span aria-live="polite">{active+1} / {photos.length}</span><button onClick={()=>go(1)} aria-label="Next photo"><ChevronRight size={20}/></button></div>}</div>{photos.length>1&&<div className="thumbnails">{photos.map((p,i)=><button key={p.url} aria-label={`Show photo ${i+1}`} aria-pressed={i===active} onClick={()=>setActive(i)}><Image src={p.url} alt="" fill sizes="92px"/></button>)}</div>}</section>}
+import {fmt} from '@/lib/i18n/config';
+import {ChevronLeftIcon,ChevronRightIcon} from './icons';
+import {useI18n} from './i18n-provider';
+
+export function Gallery({photos}:{photos:{url:string;alt:string}[]}){
+  const {lang,t}=useI18n();
+  const g=t.gallery;
+  const [active,setActive]=useState(0);
+  const go=(delta:number)=>setActive(a=>(a+delta+photos.length)%photos.length);
+  // Arrow keys follow the reading direction: in Arabic the left arrow goes to the next photo.
+  const forward=lang==='ar'?'ArrowLeft':'ArrowRight';
+  const back=lang==='ar'?'ArrowRight':'ArrowLeft';
+  if(!photos.length)return <div className="gallery gallery-empty"><span>{g.soon}</span></div>;
+  return <section className="gallery" aria-label={g.label} onKeyDown={e=>{if(e.key===forward){e.preventDefault();go(1);}if(e.key===back){e.preventDefault();go(-1);}}}>
+    <div className="gallery-main">
+      <Image key={photos[active].url} src={photos[active].url} alt={photos[active].alt} fill loading="eager" fetchPriority={active===0?'high':'auto'} sizes="(min-width:1024px) 760px,100vw"/>
+      {photos.length>1&&<div className="gallery-controls"><button type="button" onClick={()=>go(-1)} aria-label={g.prev}><ChevronLeftIcon size={22}/></button><span aria-live="polite" dir="ltr">{active+1} / {photos.length}</span><button type="button" onClick={()=>go(1)} aria-label={g.next}><ChevronRightIcon size={22}/></button></div>}
+    </div>
+    {photos.length>1&&<div className="thumbs">{photos.map((p,i)=><button type="button" key={p.url} aria-label={fmt(g.show,{n:i+1})} aria-pressed={i===active} onClick={()=>setActive(i)}><Image src={p.url} alt="" fill loading="lazy" sizes="110px"/></button>)}</div>}
+  </section>;
+}

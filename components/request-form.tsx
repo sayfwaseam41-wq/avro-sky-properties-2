@@ -1,30 +1,21 @@
 'use client';
 import {useState} from 'react';
 import Link from 'next/link';
-import {MessageCircle} from 'lucide-react';
+import {CheckIcon} from './icons';
+import {BudgetField} from './budget-field';
+import {useI18n} from './i18n-provider';
 import {site,whatsappLink} from '@/config/site';
-import {leadSchema,leadSummary,type Lead} from '@/lib/lead';
+import {propertyTypes} from '@/lib/property';
+import {leadSummary,type Lead} from '@/lib/lead-summary';
 
-const RENT_BUDGET_OPTIONS = [
-  '$150 - $250',
-  '$250 - $400',
-  '$450 - $600',
-  'Other (enter your own price)',
-] as const;
-
-const BEDROOM_OPTIONS = [
-  'Any beds',
-  '1+ beds',
-  '2+ beds',
-  '3+ beds',
-  '4+ beds',
-] as const;
+const BEDROOM_OPTIONS = ['Any beds', '1+ beds', '2+ beds', '3+ beds', '4+ beds'] as const;
+const TIMELINE_OPTIONS = ['ASAP', 'Within a month', 'Just looking'] as const;
 
 const initial = {
   propertyType: 'Apartment',
   area: '',
   bedrooms: 'Any beds',
-  budget: '$150 - $250',
+  budget: '',
   intent: 'Rent',
   timeline: 'ASAP',
   name: '',
@@ -33,11 +24,10 @@ const initial = {
   website: '',
 };
 
-export function RequestForm() {
+export function RequestForm({areas}: {areas: string[]}) {
+  const {lang, t, path, fmt} = useI18n();
+  const f = t.form;
   const [form, setForm] = useState(initial);
-  const [rentOption, setRentOption] = useState<string>('$150 - $250');
-  const [customRentBudget, setCustomRentBudget] = useState<string>('');
-  const [buyBudget, setBuyBudget] = useState<string>('');
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState<Lead | null>(null);
@@ -47,52 +37,27 @@ export function RequestForm() {
   }
 
   function handleIntentChange(newIntent: 'Rent' | 'Buy') {
-    setForm(old => {
-      let nextBudget = '';
-      if (newIntent === 'Rent') {
-        nextBudget = rentOption === 'Other (enter your own price)' ? customRentBudget : rentOption;
-      } else {
-        nextBudget = buyBudget;
-      }
-      return {...old, intent: newIntent, budget: nextBudget};
-    });
+    setForm(old => ({...old, intent: newIntent, budget: ''}));
   }
 
-  function handleRentOptionChange(value: string) {
-    setRentOption(value);
-    if (value === 'Other (enter your own price)') {
-      change('budget', customRentBudget);
-    } else {
-      change('budget', value);
-    }
-  }
-
-  function handleCustomRentBudgetChange(value: string) {
-    setCustomRentBudget(value);
-    change('budget', value);
-  }
-
-  function handleBuyBudgetChange(value: string) {
-    setBuyBudget(value);
-    change('budget', value);
+  /** Quick client-side check; the API route validates again with the full schema. */
+  function validateLead(lead: Lead) {
+    if (lead.area.length < 2) return f.errArea;
+    if (!lead.budget) return f.errBudget;
+    if (!(lead.budget.startsWith('$') || Number(lead.budget) > 0 || Number.isNaN(Number(lead.budget)))) return f.errBudgetPositive;
+    if (lead.name.length < 2) return f.errName;
+    if (lead.phone.length < 6) return f.errPhone;
+    return '';
   }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
 
-    if (form.intent === 'Rent' && rentOption === 'Other (enter your own price)' && !customRentBudget.trim()) {
-      setError('Please enter your budget.');
-      return;
-    }
-    if (form.intent === 'Buy' && !buyBudget.trim()) {
-      setError('Please enter your budget.');
-      return;
-    }
-
-    const parsed = leadSchema.safeParse(form);
-    if (!parsed.success) {
-      setError(parsed.error.issues[0].message);
+    const lead: Lead = {...form, area: form.area.trim(), budget: form.budget.trim(), name: form.name.trim(), phone: form.phone.trim(), message: form.message.trim(), intent: form.intent as Lead['intent']};
+    const problem = validateLead(lead);
+    if (problem) {
+      setError(problem);
       return;
     }
 
@@ -101,44 +66,32 @@ export function RequestForm() {
       const response = await fetch('/api/property-request', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(parsed.data),
+        body: JSON.stringify(lead),
       });
       const data = (await response.json()) as {ok?: boolean; error?: string};
       if (!response.ok || !data.ok) {
-        throw new Error(data.error || 'Unable to send your request.');
+        // Server messages are English only, so other languages get the translated fallback.
+        throw new Error((lang === 'en' && data.error) || f.errSend);
       }
-      setDone(parsed.data);
+      setDone(lead);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to send your request.');
+      setError(err instanceof Error ? err.message : f.errSend);
     } finally {
       setPending(false);
     }
   }
 
   if (done) {
+    const summary = leadSummary(done, {...f.summary, types: lang === 'en' ? undefined : t.types, beds: f.beds, timelines: f.timelines});
     return (
       <section className="success-panel" aria-live="polite">
-        <MessageCircle size={34} color={site.primaryColor} />
-        <h2>Thanks, {done.name}.</h2>
-        <p>
-          Your request has been sent to {site.name}. Continue the conversation on WhatsApp if you’d
-          like a faster response.
-        </p>
+        <span className="success-icon"><CheckIcon size={30}/></span>
+        <h2>{fmt(f.thanks, {name: done.name})}</h2>
+        <p>{fmt(f.thanksText, {site: site.name})}</p>
         <div className="success-actions">
-          <Link href="/properties" className="button secondary-dark">
-            Browse available properties
-          </Link>
-          <a
-            className="button"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={whatsappLink(leadSummary(done))}
-          >
-            Continue on WhatsApp
-          </a>
-          <Link href="/" className="button secondary-dark">
-            Back to Home
-          </Link>
+          <Link href={path('/properties')} className="btn btn-outline">{f.browse}</Link>
+          <a className="btn btn-gold" target="_blank" rel="noopener noreferrer" href={whatsappLink(summary)}>{f.continueWa}</a>
+          <Link href={path('/')} className="btn btn-outline">{f.backHome}</Link>
         </div>
       </section>
     );
@@ -147,182 +100,96 @@ export function RequestForm() {
   return (
     <form className="lead-form" onSubmit={submit} noValidate>
       {error && (
-        <div className="error-message" role="alert">
+        <div className="form-error" role="alert">
           {error}
         </div>
       )}
 
       <fieldset className="full">
-        <legend>What are you looking to do?</legend>
+        <legend>{f.intentLegend}</legend>
         <div className="toggle">
           <label>
-            <input
-              type="radio"
-              name="intent"
-              checked={form.intent === 'Rent'}
-              onChange={() => handleIntentChange('Rent')}
-            />
-            Rent
+            <input type="radio" name="intent" checked={form.intent === 'Rent'} onChange={() => handleIntentChange('Rent')} />
+            {f.rent}
           </label>
           <label>
-            <input
-              type="radio"
-              name="intent"
-              checked={form.intent === 'Buy'}
-              onChange={() => handleIntentChange('Buy')}
-            />
-            Buy
+            <input type="radio" name="intent" checked={form.intent === 'Buy'} onChange={() => handleIntentChange('Buy')} />
+            {f.buy}
           </label>
         </div>
       </fieldset>
 
       <label className="field" htmlFor="property-type-select">
-        Property Type
-        <select
-          id="property-type-select"
-          value={form.propertyType}
-          onChange={e => change('propertyType', e.target.value)}
-        >
-          {['Apartment', 'House', 'Villa', 'Land', 'Office'].map(v => (
-            <option key={v} value={v}>
-              {v}
-            </option>
+        {f.propType}
+        <select id="property-type-select" value={form.propertyType} onChange={e => change('propertyType', e.target.value)}>
+          {propertyTypes.map(v => (
+            <option key={v} value={v}>{t.types[v]}</option>
           ))}
         </select>
       </label>
 
       <label className="field" htmlFor="preferred-area-input">
-        Preferred Area
+        {f.area}
         <input
           id="preferred-area-input"
           required
+          list="area-options"
+          autoComplete="off"
           value={form.area}
           onChange={e => change('area', e.target.value)}
-          placeholder="e.g. Malta or Zawa"
+          placeholder={f.areaPh}
         />
+        <datalist id="area-options">
+          {areas.map(area => (
+            <option key={area} value={area} />
+          ))}
+        </datalist>
       </label>
 
       <label className="field" htmlFor="bedrooms-select">
-        Bedrooms
-        <select
-          id="bedrooms-select"
-          value={form.bedrooms}
-          onChange={e => change('bedrooms', e.target.value)}
-        >
+        {f.bedrooms}
+        <select id="bedrooms-select" value={form.bedrooms} onChange={e => change('bedrooms', e.target.value)}>
           {BEDROOM_OPTIONS.map(opt => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
+            <option key={opt} value={opt}>{f.beds[opt]}</option>
           ))}
         </select>
       </label>
 
-      {form.intent === 'Rent' ? (
-        <label className="field" htmlFor="rent-budget-select">
-          Budget (USD)
-          <select
-            id="rent-budget-select"
-            value={rentOption}
-            onChange={e => handleRentOptionChange(e.target.value)}
-          >
-            {RENT_BUDGET_OPTIONS.map(opt => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-          {rentOption === 'Other (enter your own price)' && (
-            <input
-              id="custom-rent-budget"
-              type="number"
-              min="1"
-              required
-              value={customRentBudget}
-              onChange={e => handleCustomRentBudgetChange(e.target.value)}
-              placeholder="Enter your budget"
-              aria-label="Enter your custom rent budget in USD"
-              autoFocus
-            />
-          )}
-        </label>
-      ) : (
-        <label className="field" htmlFor="buy-budget-input">
-          Budget (USD)
-          <input
-            id="buy-budget-input"
-            required
-            type="number"
-            min="1"
-            value={buyBudget}
-            onChange={e => handleBuyBudgetChange(e.target.value)}
-            placeholder="Your maximum budget"
-          />
-        </label>
-      )}
+      <BudgetField key={form.intent} intent={form.intent as 'Rent' | 'Buy'} value={form.budget} onChange={value => change('budget', value)} />
 
       <label className="field full" htmlFor="timeline-select">
-        Timeline
-        <select
-          id="timeline-select"
-          value={form.timeline}
-          onChange={e => change('timeline', e.target.value)}
-        >
-          <option>ASAP</option>
-          <option>Within a month</option>
-          <option>Just looking</option>
+        {f.timeline}
+        <select id="timeline-select" value={form.timeline} onChange={e => change('timeline', e.target.value)}>
+          {TIMELINE_OPTIONS.map(opt => (
+            <option key={opt} value={opt}>{f.timelines[opt]}</option>
+          ))}
         </select>
       </label>
 
       <label className="field" htmlFor="name-input">
-        Your Name
-        <input
-          id="name-input"
-          required
-          autoComplete="name"
-          value={form.name}
-          onChange={e => change('name', e.target.value)}
-          placeholder="Full name"
-        />
+        {f.name}
+        <input id="name-input" required autoComplete="name" value={form.name} onChange={e => change('name', e.target.value)} placeholder={f.namePh} />
       </label>
 
       <label className="field" htmlFor="phone-input">
-        Phone / WhatsApp
-        <input
-          id="phone-input"
-          required
-          autoComplete="tel"
-          value={form.phone}
-          onChange={e => change('phone', e.target.value)}
-          placeholder="+964 ..."
-        />
+        {f.phone}
+        <input id="phone-input" dir="ltr" type="tel" required autoComplete="tel" value={form.phone} onChange={e => change('phone', e.target.value)} placeholder={f.phonePh} />
       </label>
 
       <label className="field full" htmlFor="message-textarea">
-        Anything else? <span style={{fontWeight: 400}}>(optional)</span>
-        <textarea
-          id="message-textarea"
-          value={form.message}
-          onChange={e => change('message', e.target.value)}
-          placeholder="Tell us what would make this property right for you."
-        />
+        {f.message} <span style={{fontWeight: 400}}>{f.optional}</span>
+        <textarea id="message-textarea" dir="auto" value={form.message} onChange={e => change('message', e.target.value)} placeholder={f.messagePh} />
       </label>
 
       <label className="honeypot" aria-hidden="true" style={{display: 'none'}}>
         Website
-        <input
-          tabIndex={-1}
-          autoComplete="off"
-          value={form.website}
-          onChange={e => change('website', e.target.value)}
-        />
+        <input tabIndex={-1} autoComplete="off" value={form.website} onChange={e => change('website', e.target.value)} />
       </label>
 
-      <p className="form-note full">
-        By sending this form, you ask {site.name} to contact you about your property search.
-      </p>
+      <p className="form-note full">{fmt(f.note, {site: site.name})}</p>
 
-      <button className="button full" disabled={pending}>
-        {pending ? 'Sending request…' : 'Send my request'}
+      <button className="btn btn-gold btn-lg full" disabled={pending}>
+        {pending ? f.sending : f.submit}
       </button>
     </form>
   );

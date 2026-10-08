@@ -1,6 +1,7 @@
 'use server';
 
-import {revalidatePath} from 'next/cache';
+import {revalidatePath,updateTag} from 'next/cache';
+import {propertiesTag} from '@/lib/public-data';
 import {redirect} from 'next/navigation';
 import {headers} from 'next/headers';
 import {endAdminSession,requireAdmin,requireRole,startAdminSession} from '@/lib/admin-auth';
@@ -27,7 +28,7 @@ async function save(formData:FormData,id?:string):Promise<ActionState>{
     await requireAdmin();
     if(id) await updateProperty(id,formData); else await createProperty(formData);
   } catch(error) { return {error:error instanceof Error?error.message:'Unable to save this property.'}; }
-  revalidatePath('/');revalidatePath('/properties');revalidatePath('/admin');
+  updateTag(propertiesTag);revalidatePath('/[lang]','layout');revalidatePath('/admin');
   return {};
 }
 export async function create(_:ActionState,formData:FormData){return save(formData);}
@@ -35,9 +36,9 @@ export async function update(_:ActionState,formData:FormData){return save(formDa
 export async function remove(_:ActionState,formData:FormData):Promise<ActionState>{
   try {await requireAdmin();await deleteProperty(String(formData.get('id')||''));}
   catch(error){return {error:error instanceof Error?error.message:'Unable to delete this property.'};}
-  revalidatePath('/');revalidatePath('/properties');revalidatePath('/admin');return {};
+  updateTag(propertiesTag);revalidatePath('/[lang]','layout');revalidatePath('/admin');return {};
 }
-async function proSave(formData:FormData,task:()=>Promise<void>,roles:('Admin'|'Agent')[]):Promise<ActionState>{try{await requireRole(...roles);await task();}catch(error){return {error:error instanceof Error?error.message:'Unable to save.'};}revalidatePath('/admin-pro');revalidatePath('/admin');revalidatePath('/admin-basic');revalidatePath('/properties');return {};}
+async function proSave(formData:FormData,task:()=>Promise<void>,roles:('Admin'|'Agent')[]):Promise<ActionState>{try{await requireRole(...roles);await task();}catch(error){return {error:error instanceof Error?error.message:'Unable to save.'};}updateTag(propertiesTag);revalidatePath('/[lang]','layout');revalidatePath('/admin-pro');revalidatePath('/admin');revalidatePath('/admin-basic');return {};}
 export async function addClient(_:ActionState,formData:FormData){return proSave(formData,()=>createClient(formData),['Admin','Agent']);}
 export async function addRental(_:ActionState,formData:FormData){return proSave(formData,()=>createRental(formData),['Admin']);}
 export async function payRent(_:ActionState,formData:FormData){return proSave(formData,()=>markPayment(formData),['Admin']);}

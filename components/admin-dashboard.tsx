@@ -4,7 +4,7 @@ import {useActionState,useState} from 'react';
 import {upload} from '@vercel/blob/client';
 import type {Property} from '@/lib/property';
 import {propertyTypes} from '@/lib/property';
-import {create,remove,update,type ActionState} from '@/app/admin/actions';
+import {create,remove,update,type ActionState} from '@/app/(admin)/admin/actions';
 
 const initial:ActionState={};
 function Submit({children}:{children:string}){return <button className="button" type="submit">{children}</button>}

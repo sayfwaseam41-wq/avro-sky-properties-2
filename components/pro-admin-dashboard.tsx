@@ -1,7 +1,7 @@
 'use client';
 
 import {useActionState,useMemo,useState} from 'react';
-import {addClient,addRental,addSale,addStaff,addTemplate,payRent,type ActionState} from '@/app/admin/actions';
+import {addClient,addRental,addSale,addStaff,addTemplate,payRent,type ActionState} from '@/app/(admin)/admin/actions';
 import type {Client,MessageTemplate,Payment,Rental,Sale,StaffMember} from '@/lib/admin-store';
 import type {Property} from '@/lib/property';
 

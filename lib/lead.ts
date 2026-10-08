@@ -21,10 +21,4 @@ export const leadSchema = z.object({
 
 export type Lead = z.infer<typeof leadSchema>;
 
-export function leadSummary(lead: Lead) {
-  const bedsText = lead.bedrooms === 'Any beds' ? '' : `${lead.bedrooms} `;
-  const budgetFormatted = lead.budget.startsWith('$') || lead.budget.toLowerCase().startsWith('usd')
-    ? lead.budget
-    : `$${lead.budget}`;
-  return `Hello, I’m ${lead.name}. I’m looking to ${lead.intent.toLowerCase()} a ${bedsText}${lead.propertyType.toLowerCase()} in ${lead.area}, with a budget of ${budgetFormatted}. Timeline: ${lead.timeline}. My contact: ${lead.phone}.${lead.message ? ` Note: ${lead.message}` : ''}`;
-}
+export {leadSummary} from './lead-summary';

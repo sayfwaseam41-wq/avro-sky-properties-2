@@ -1,6 +1,6 @@
 import {AdminLoginForm} from '@/components/admin-login-form';
 import {currentStaff,isAdmin} from '@/lib/admin-auth';
-import {logout} from '@/app/admin/actions';
+import {logout} from '@/app/(admin)/admin/actions';
 import {getProData} from '@/lib/admin-store';
 import {getAllProperties} from '@/lib/property-store';
 import {ProAdminDashboard} from '@/components/pro-admin-dashboard';

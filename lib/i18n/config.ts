@@ -1,0 +1,18 @@
+export const langs=['en','ar'] as const;
+export type Lang=(typeof langs)[number];
+export const defaultLang:Lang='en';
+export const isLang=(value:string):value is Lang=>(langs as readonly string[]).includes(value);
+export const dirOf=(lang:Lang)=>lang==='ar'?'rtl':'ltr';
+
+/** English lives at the site root and other languages under a prefix: localePath('ar','/properties') -> /ar/properties */
+export function localePath(lang:Lang,path:string){
+  if(lang===defaultLang)return path;
+  return path==='/'?`/${lang}`:`/${lang}${path}`;
+}
+/** Removes the language prefix from a browser path: /ar/properties -> /properties */
+export function stripLang(path:string){
+  for(const lang of langs)if(lang!==defaultLang&&(path===`/${lang}`||path.startsWith(`/${lang}/`)))return path.slice(lang.length+1)||'/';
+  return path;
+}
+/** Fills {name} placeholders in a translated string. */
+export function fmt(text:string,values:Record<string,string|number>={}){return text.replace(/\{(\w+)\}/g,(_,key)=>String(values[key]??''));}

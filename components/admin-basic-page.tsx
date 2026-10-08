@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import {AdminDashboard} from '@/components/admin-dashboard';
 import {getAllProperties} from '@/lib/property-store';
-import {logout} from '@/app/admin/actions';
+import {logout} from '@/app/(admin)/admin/actions';
 
 export async function AdminBasicPage(){
  const properties=await getAllProperties();

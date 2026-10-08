@@ -6,3 +6,5 @@ export function filterProperties(properties:Property[], f:Filters) {
   return properties.filter(p=>(!f.area || p.area===f.area) && (!f.type || p.type===f.type) && (!f.listingType || p.listingType===f.listingType) && (!f.minPrice || p.price>=Number(f.minPrice)) && (!f.maxPrice || p.price<=Number(f.maxPrice)) && (!f.bedrooms || (f.bedrooms==='4+' ? p.bedrooms>=4 : p.bedrooms===Number(f.bedrooms))));
 }
 export function featuredProperties(properties:Property[]) { const featured=properties.filter(p=>p.featured); return (featured.length?featured:properties).slice(0,6); }
+/** Distinct, sorted areas across listings. Used by the listings filter, the home search and the request form. */
+export function areaList(properties:Property[]){return [...new Set(properties.map(p=>p.area).filter(Boolean))].sort();}
