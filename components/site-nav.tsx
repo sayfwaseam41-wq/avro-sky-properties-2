@@ -16,12 +16,14 @@ export function SiteNav({phone,whatsapp}:{phone:string;whatsapp:string}){
   const active=(href:string)=>href==='/'?pathname==='/':pathname.startsWith(href);
   const other=lang==='en'?'ar':'en';
   return <>
-    <button type="button" className="nav-toggle" aria-expanded={open} aria-controls="site-nav" aria-label={open?t.common.closeMenu:t.common.openMenu} onClick={()=>setOpen(o=>!o)}>{open?<CloseIcon size={24}/>:<MenuIcon size={24}/>}</button>
     <nav id="site-nav" className="site-nav" data-open={open} aria-label={t.common.mainNav}>
       {links.map(([href,key])=><Link key={href} href={path(href)} aria-current={active(href)?'page':undefined} onClick={()=>setOpen(false)}>{t.common[key]}</Link>)}
       <a className="nav-phone" href={`tel:${phone}`}>{t.common.callUs}</a>
-      <a className="lang-switch" href={localePath(other,pathname)} hrefLang={other} lang={other} onClick={e=>{e.currentTarget.href=localePath(other,pathname)+window.location.search+window.location.hash;}}>{t.common.otherLang}</a>
       <a className="btn btn-gold btn-sm" href={whatsapp} target="_blank" rel="noopener noreferrer">{t.common.whatsappUs}</a>
     </nav>
+    <div className="header-tools">
+      <a className="lang-switch" href={localePath(other,pathname)} hrefLang={other} lang={other} onClick={e=>{e.currentTarget.href=localePath(other,pathname)+window.location.search+window.location.hash;}}>{t.common.otherLang}</a>
+      <button type="button" className="nav-toggle" aria-expanded={open} aria-controls="site-nav" aria-label={open?t.common.closeMenu:t.common.openMenu} onClick={()=>setOpen(o=>!o)}>{open?<CloseIcon size={24}/>:<MenuIcon size={24}/>}</button>
+    </div>
   </>;
 }

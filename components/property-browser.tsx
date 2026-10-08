@@ -2,6 +2,7 @@
 import {useDeferredValue,useState} from 'react';
 import Link from 'next/link';
 import {fmt} from '@/lib/i18n/config';
+import {areaName} from '@/lib/i18n/areas';
 import {areaList,emptyFilters,filterProperties,propertyTypes,type Property,type Filters} from '@/lib/property';
 import {PropertyCard} from './property-card';
 import {useI18n} from './i18n-provider';
@@ -19,7 +20,7 @@ export function PropertyBrowser({properties,initial}:{properties:Property[];init
   return <>
     <div className="filters" role="search" aria-label={f.label}>
       <label className="field">{f.type}<select value={filters.type} onChange={e=>set('type',e.target.value)}><option value="">{f.allTypes}</option>{propertyTypes.map(type=><option key={type} value={type}>{t.types[type]}</option>)}</select></label>
-      <label className="field">{f.area}<select value={filters.area} onChange={e=>set('area',e.target.value)}><option value="">{f.allAreas}</option>{areas.map(area=><option key={area}>{area}</option>)}</select></label>
+      <label className="field">{f.area}<select value={filters.area} onChange={e=>set('area',e.target.value)}><option value="">{f.allAreas}</option>{areas.map(area=><option key={area} value={area}>{areaName(lang,area)}</option>)}</select></label>
       <label className="field">{f.rentOrBuy}<select value={filters.listingType} onChange={e=>set('listingType',e.target.value)}><option value="">{f.rentSale}</option><option value="For Rent">{f.forRent}</option><option value="For Sale">{f.forSale}</option></select></label>
       <label className="field">{f.bedrooms}<select value={filters.bedrooms} onChange={e=>set('bedrooms',e.target.value)}><option value="">{f.any}</option><option value="0">{f.none}</option>{[1,2,3].map(n=><option key={n} value={n}>{n}</option>)}<option value="4+">4+</option></select></label>
       <label className="field">{f.min}<input type="number" dir="ltr" inputMode="numeric" min="0" placeholder={f.noMin} value={filters.minPrice} onChange={e=>set('minPrice',e.target.value)}/></label>

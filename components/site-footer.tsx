@@ -17,7 +17,7 @@ export function SiteFooter({lang,t}:{lang:Lang;t:Dict}){
         </div>
         <nav aria-label={t.footer.explore}><h2>{t.footer.explore}</h2><Link href={to('/properties')}>{t.footer.all}</Link><Link href={to('/properties')+'?type=Apartment'}>{t.typesPlural.Apartment}</Link><Link href={to('/properties')+'?type=House'}>{t.typesPlural.House}</Link><Link href={to('/properties')+'?type=Land'}>{t.typesPlural.Land}</Link><Link href={to('/request')}>{t.footer.requestLink}</Link></nav>
         <div className="footer-contact"><h2>{t.footer.contact}</h2>
-          <a href={`tel:${site.phone}`}><PhoneIcon size={18}/><bdi dir="ltr">{site.phone}</bdi></a>
+          <a href={`tel:${site.phone}`}><PhoneIcon size={18}/>{t.common.callUs}</a>
           <a href={`mailto:${site.email}`}><MailIcon size={18}/><bdi dir="ltr">{site.email}</bdi></a>
           <a href={message} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={18}/>{lang==='ar'?'واتساب':'WhatsApp'}</a>
           <span><PinIcon size={18}/>{t.common.address}</span>

@@ -6,6 +6,7 @@ import {BudgetField} from './budget-field';
 import {useI18n} from './i18n-provider';
 import {site,whatsappLink} from '@/config/site';
 import {propertyTypes} from '@/lib/property';
+import {areaName, canonicalArea} from '@/lib/i18n/areas';
 import {leadSummary,type Lead} from '@/lib/lead-summary';
 
 const BEDROOM_OPTIONS = ['Any beds', '1+ beds', '2+ beds', '3+ beds', '4+ beds'] as const;
@@ -66,7 +67,7 @@ export function RequestForm({areas}: {areas: string[]}) {
       const response = await fetch('/api/property-request', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(lead),
+        body: JSON.stringify({...lead, area: canonicalArea(lead.area)}),
       });
       const data = (await response.json()) as {ok?: boolean; error?: string};
       if (!response.ok || !data.ok) {
@@ -141,7 +142,7 @@ export function RequestForm({areas}: {areas: string[]}) {
         />
         <datalist id="area-options">
           {areas.map(area => (
-            <option key={area} value={area} />
+            <option key={area} value={areaName(lang, area)} />
           ))}
         </datalist>
       </label>

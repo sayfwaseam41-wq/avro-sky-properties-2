@@ -3,10 +3,11 @@ import {useState} from 'react';
 import {BudgetField} from './budget-field';
 import {useI18n} from './i18n-provider';
 import {budgetBounds,type Intent} from '@/lib/budget';
+import {areaName} from '@/lib/i18n/areas';
 import {propertyTypes} from '@/lib/property';
 
 export function HomeSearch({areas}:{areas:string[]}){
-  const {t,path}=useI18n();
+  const {lang,t,path}=useI18n();
   const h=t.home;
   const [intent,setIntent]=useState<Intent>('Rent');
   const [budget,setBudget]=useState('');
@@ -18,7 +19,7 @@ export function HomeSearch({areas}:{areas:string[]}){
       <label><input type="radio" name="listingType" value="For Sale" checked={intent==='Buy'} onChange={()=>choose('Buy')}/><span>{h.buy}</span></label>
     </fieldset>
     <label className="field">{h.propType}<select name="type" defaultValue=""><option value="">{h.anyType}</option>{propertyTypes.map(type=><option key={type} value={type}>{t.types[type]}</option>)}</select></label>
-    <label className="field">{h.area}<select name="area" defaultValue=""><option value="">{h.anyArea}</option>{areas.map(a=><option key={a}>{a}</option>)}</select></label>
+    <label className="field">{h.area}<select name="area" defaultValue=""><option value="">{h.anyArea}</option>{areas.map(a=><option key={a} value={a}>{areaName(lang,a)}</option>)}</select></label>
     <BudgetField key={intent} intent={intent} value={budget} onChange={setBudget} anyLabel/>
     {min&&<input type="hidden" name="minPrice" value={min}/>}
     {max&&<input type="hidden" name="maxPrice" value={max}/>}

@@ -6,6 +6,7 @@ import {Gallery} from '@/components/gallery';
 import {AreaIcon,ArrowIcon,BathIcon,BedIcon,HouseIcon,PhoneIcon,PinIcon,WhatsAppIcon} from '@/components/icons';
 import {site,whatsappLink} from '@/config/site';
 import {fmt,localePath} from '@/lib/i18n/config';
+import {areaName} from '@/lib/i18n/areas';
 import {getDict} from '@/lib/i18n/dict';
 import {alternates,langFrom,type LangParams} from '@/lib/i18n/server';
 
@@ -22,7 +23,7 @@ export async function generateMetadata({params}:Params){
   const p=await getCachedProperty(id);
   if(!p)return {title:t.detail.notFound};
   const rent=p.listingType==='For Rent';
-  const summary=fmt(t.detail.metaDesc,{type:t.types[p.type]??p.type,listing:(rent?t.card.forRent:t.card.forSale).toLowerCase(),area:p.area,description:p.description}).slice(0,200);
+  const summary=fmt(t.detail.metaDesc,{type:t.types[p.type]??p.type,listing:(rent?t.card.forRent:t.card.forSale).toLowerCase(),area:areaName(lang,p.area),description:p.description}).slice(0,200);
   return {title:p.title,description:summary,alternates:alternates(lang,`/properties/${p.id}`),openGraph:{title:p.title,description:summary,...(p.photos[0]?{images:[p.photos[0].url]}:{})}};
 }
 
@@ -36,7 +37,7 @@ export default async function Detail({params}:Params){
   if(!p)notFound();
   const rent=p.listingType==='For Rent';
   const typeName=t.types[p.type]??p.type;
-  const message=whatsappLink(fmt(d.waEnquire,{site:site.name,title:p.title,area:p.area,id:p.id}));
+  const message=whatsappLink(fmt(d.waEnquire,{site:site.name,title:p.title,area:areaName(lang,p.area),id:p.id}));
   return <section className="section detail">
     <div className="wrap">
       <nav className="crumbs" aria-label={d.breadcrumb}><Link href={to('/')}>{t.common.home}</Link><span aria-hidden="true">/</span><Link href={to('/properties')}>{t.common.properties}</Link><span aria-hidden="true">/</span><span aria-current="page">{p.title}</span></nav>
@@ -46,7 +47,7 @@ export default async function Detail({params}:Params){
           <header className="detail-head">
             <p className="eyebrow">{rent?t.card.forRent:t.card.forSale} · {typeName}</p>
             <h1>{p.title}</h1>
-            <p className="detail-area"><PinIcon size={18}/>{fmt(t.card.areaIn,{area:p.area})}</p>
+            <p className="detail-area"><PinIcon size={18}/>{fmt(t.card.areaIn,{area:areaName(lang,p.area)})}</p>
           </header>
           <ul className="facts" aria-label={d.facts}>
             {p.type!=='Land'&&<li><BedIcon size={24}/><b>{p.bedrooms}</b><span>{p.bedrooms===1?d.bedroom:d.bedrooms}</span></li>}

@@ -52,7 +52,7 @@ export function Header(){
               {label}
             </Link>
           ))}
-          <a className="nav-phone" href={`tel:${site.phone}`}>{site.phone}</a>
+          <a className="nav-phone" href={`tel:${site.phone}`}>Call us</a>
           <a
             className="button nav-cta"
             href={`https://wa.me/${site.whatsapp.replace(/\D/g,'')}`}

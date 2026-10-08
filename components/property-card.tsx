@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {site,whatsappLink} from '@/config/site';
 import {fmt,localePath,type Lang} from '@/lib/i18n/config';
+import {areaName} from '@/lib/i18n/areas';
 import type {Dict} from '@/lib/i18n/en';
 import type {Property} from '@/lib/property';
 import {AreaIcon,BathIcon,BedIcon,PinIcon,WhatsAppIcon} from './icons';
@@ -27,7 +28,7 @@ export function PropertyCard({property:p,lang,t,eager=false,heading:Heading='h3'
     <div className="card-body">
       <p className="card-price"><bdi dir="ltr">{priceLabel(p)}</bdi>{rent&&<small> {c.perMonth}</small>}</p>
       <Heading><Link href={href}>{p.title}</Link></Heading>
-      <p className="card-area"><PinIcon size={16}/>{fmt(c.areaIn,{area:p.area})}</p>
+      <p className="card-area"><PinIcon size={16}/>{fmt(c.areaIn,{area:areaName(lang,p.area)})}</p>
       <ul className="specs" aria-label={c.keyDetails}>
         {p.type!=='Land'&&<li><BedIcon size={18}/>{p.bedrooms} <span>{p.bedrooms===1?c.bed:c.beds}</span></li>}
         {p.type!=='Land'&&<li><BathIcon size={18}/>{p.bathrooms} <span>{p.bathrooms===1?c.bath:c.baths}</span></li>}
@@ -35,7 +36,7 @@ export function PropertyCard({property:p,lang,t,eager=false,heading:Heading='h3'
       </ul>
       <div className="card-actions">
         <Link className="btn btn-outline btn-sm" href={href}>{c.viewDetails}</Link>
-        <a className="icon-btn" href={whatsappLink(fmt(c.waProperty,{site:site.name,title:p.title,area:p.area,id:p.id}))} target="_blank" rel="noopener noreferrer" aria-label={fmt(c.enquire,{title:p.title})}><WhatsAppIcon size={20}/></a>
+        <a className="icon-btn" href={whatsappLink(fmt(c.waProperty,{site:site.name,title:p.title,area:areaName(lang,p.area),id:p.id}))} target="_blank" rel="noopener noreferrer" aria-label={fmt(c.enquire,{title:p.title})}><WhatsAppIcon size={20}/></a>
       </div>
     </div>
   </article>;

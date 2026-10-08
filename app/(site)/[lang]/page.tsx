@@ -7,6 +7,7 @@ import {HomeSearch} from '@/components/home-search';
 import {ApartmentIcon,ArrowIcon,CheckIcon,HouseIcon,LandIcon,OfficeIcon,PhoneIcon,VillaIcon,WhatsAppIcon} from '@/components/icons';
 import {site,whatsappLink} from '@/config/site';
 import {fmt,localePath} from '@/lib/i18n/config';
+import {areaName} from '@/lib/i18n/areas';
 import {getDict} from '@/lib/i18n/dict';
 import {langFrom,type LangParams} from '@/lib/i18n/server';
 
@@ -61,7 +62,7 @@ export default async function Home({params}:LangParams){
         {featured.length
           ?<div className="grid">{featured.map(p=><PropertyCard key={p.id} property={p} lang={lang} t={t}/>)}</div>
           :<div className="empty"><h3>{h.preparing}</h3><p>{h.preparingText}</p><Link className="btn btn-gold" href={to('/request')}>{h.requestProperty}</Link></div>}
-        {areas.length>0&&<div className="areas"><span>{h.popularAreas}</span>{areas.map(a=><Link key={a} href={`${to('/properties')}?area=${encodeURIComponent(a)}`}>{a}</Link>)}</div>}
+        {areas.length>0&&<div className="areas"><span>{h.popularAreas}</span>{areas.map(a=><Link key={a} href={`${to('/properties')}?area=${encodeURIComponent(a)}`}>{areaName(lang,a)}</Link>)}</div>}
       </div>
     </section>
 
@@ -77,7 +78,7 @@ export default async function Home({params}:LangParams){
     <section className="cta" aria-labelledby="cta-h">
       <div className="wrap cta-inner">
         <div><h2 id="cta-h">{h.ctaTitle}</h2><p>{h.ctaText}</p></div>
-        <div className="cta-actions"><Link className="btn btn-gold btn-lg" href={to('/request')}>{h.requestProperty}</Link><a className="btn btn-ghost btn-lg" href={`tel:${site.phone}`}><PhoneIcon size={20}/><bdi dir="ltr">{site.phone}</bdi></a></div>
+        <div className="cta-actions"><Link className="btn btn-gold btn-lg" href={to('/request')}>{h.requestProperty}</Link><a className="btn btn-ghost btn-lg" href={`tel:${site.phone}`}><PhoneIcon size={20}/>{t.common.callUs}</a></div>
       </div>
     </section>
   </>;
