@@ -3,6 +3,7 @@ import {getCachedProperties} from '@/lib/public-data';
 import {areaList,featuredProperties,type Property} from '@/lib/property';
 import {PropertyCard} from '@/components/property-card';
 import {HeroArt} from '@/components/hero-art';
+import {HeroHeadline,headlineWordCount} from '@/components/hero-headline';
 import {HomeSearch} from '@/components/home-search';
 import {ApartmentIcon,ArrowIcon,CheckIcon,HouseIcon,LandIcon,OfficeIcon,PhoneIcon,VillaIcon,WhatsAppIcon} from '@/components/icons';
 import {site,whatsappLink} from '@/config/site';
@@ -36,12 +37,13 @@ export default async function Home({params}:LangParams){
       <HeroArt/>
       <div className="wrap hero-inner">
         <p className="eyebrow eyebrow-light">{h.eyebrow}</p>
-        <h1>{h.h1a}<em>{h.h1em}</em>{h.h1z}</h1>
+        <HeroHeadline a={h.h1a} em={h.h1em} z={h.h1z}/>
         <p className="hero-lede">{h.lede}</p>
         <div className="hero-actions">
           <Link className="btn btn-gold btn-lg" href={to('/properties')}>{h.browse}<ArrowIcon size={18}/></Link>
           <a className="btn btn-ghost btn-lg" href={whatsappLink(fmt(h.waHelp,{site:site.name}))} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={20}/>{h.chatWa}</a>
         </div>
+        {properties.length>0&&<div className="hero-stat" style={{"--hero-words":headlineWordCount(h.h1a,h.h1em)} as React.CSSProperties}><b>{properties.length}</b><span>{h.statLabel}</span></div>}
       </div>
     </section>
 

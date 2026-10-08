@@ -9,7 +9,7 @@ export const ar:Dict={
   typesPlural:{Apartment:'شقق',House:'منازل',Villa:'فلل',Land:'أراضٍ',Office:'مكاتب'},
   card:{forRent:'للإيجار',forSale:'للبيع',bed:'غرفة نوم',beds:'غرف نوم',bath:'حمام',baths:'حمامات',perMonth:'/ شهرياً',viewDetails:'عرض التفاصيل',enquire:'استفسر عن {title} عبر واتساب',keyDetails:'التفاصيل الرئيسية',areaIn:'{area}، دهوك',waProperty:'مرحباً {site}، أنا مهتم بـ {title} في {area} (الرقم المرجعي {id}).'},
   budget:{label:'الميزانية (دولار أمريكي)',other:'أخرى (أدخل ميزانيتك)',select:'اختر ميزانيتك',any:'أي ميزانية',enter:'أدخل ميزانيتك',enterAria:'أدخل ميزانيتك بالدولار الأمريكي'},
-  home:{eyebrow:'عقارات في دهوك',h1a:'اعثر على المكان الذي يبدو كأنه ',h1em:'بيتك',h1z:'.',lede:'شقق ومنازل وأراضٍ في أنحاء دهوك، تُعرض بمعرفة محلية وتفاصيل صادقة.',browse:'تصفّح العقارات',chatWa:'تحدّث عبر واتساب',waHelp:'مرحباً {site}، أودّ المساعدة في العثور على عقار.',
+  home:{eyebrow:'عقارات في دهوك',h1a:'اعثر على المكان الذي يبدو كأنه ',h1em:'بيتك',h1z:'.',lede:'شقق ومنازل وأراضٍ في أنحاء دهوك، تُعرض بمعرفة محلية وتفاصيل صادقة.',browse:'تصفّح العقارات',chatWa:'تحدّث عبر واتساب',statLabel:'عقارات معروضة',waHelp:'مرحباً {site}، أودّ المساعدة في العثور على عقار.',
     searchLabel:'البحث عن عقارات',iWant:'أريد',rent:'إيجار',buy:'شراء',propType:'نوع العقار',anyType:'أي نوع',area:'المنطقة',anyArea:'أي منطقة',search:'بحث',
     catEyebrow:'تصفّح حسب النوع',catTitle:'ماذا تبحث عن؟',available:'{n} متاح',askUs:'اسألنا',
     featEyebrow:'مميّز',featTitle:'عقارات مختارة',viewAll:'عرض كل العقارات',preparing:'يجري تجهيز عقارات جديدة',preparingText:'أخبرنا بما تحتاجه وسنساعدك في البحث.',requestProperty:'اطلب عقاراً',popularAreas:'مناطق شائعة',
