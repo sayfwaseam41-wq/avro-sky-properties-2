@@ -7,7 +7,7 @@ import type {Dict} from '@/lib/i18n/en';
 import type {Property} from '@/lib/property';
 import {AreaIcon,BathIcon,BedIcon,PinIcon,WhatsAppIcon} from './icons';
 
-const money=new Intl.NumberFormat('en-US',{style:'currency',currency:site.currency,maximumFractionDigits:0});
+const money=new Intl.NumberFormat(site.locale,{style:'currency',currency:site.currency,maximumFractionDigits:0});
 export function priceLabel(p:Pick<Property,'price'|'listingType'>){return money.format(p.price);}
 
 type Props={property:Property;lang:Lang;t:Dict;eager?:boolean;heading?:'h2'|'h3'};

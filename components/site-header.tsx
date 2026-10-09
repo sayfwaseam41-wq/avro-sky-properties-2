@@ -10,7 +10,7 @@ export function SiteHeader({lang,t}:{lang:Lang;t:Dict}){
     <div className="wrap header-inner">
       <Link href={localePath(lang,'/')} className="brand" aria-label={fmt(t.common.homeAria,{site:site.name})}>
         <Image src="/brand/mark-96.webp" alt="" width={40} height={45} loading="eager" unoptimized/>
-        <span className="brand-text"><b dir="ltr">AVRO SKY</b><small>{t.common.tagline}</small></span>
+        <span className="brand-text"><b dir="ltr">{site.name.toUpperCase()}</b><small>{lang==='en'&&site.tagline?site.tagline:t.common.tagline}</small></span>
       </Link>
       <SiteNav phone={site.phone} whatsapp={whatsappLink(fmt(t.common.waGeneral,{site:site.name}))}/>
     </div>

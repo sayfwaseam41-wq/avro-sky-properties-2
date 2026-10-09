@@ -1,7 +1,7 @@
 import 'server-only';
 import {createHmac, timingSafeEqual} from 'crypto';
 import {cookies} from 'next/headers';
-import {findStaff,passwordMatches,type StaffRole} from './admin-store';
+import {findStaff,getStaffById,passwordMatches,type StaffRole} from './admin-store';
 
 const cookieName='avro_sky_admin';
 
@@ -14,8 +14,16 @@ type Session={id:string;role:StaffRole;expires:number};
 function signature(value:string){return createHmac('sha256',secret()).update(value).digest('base64url');}
 function parseSession(value?:string):Session|undefined{try{if(!value)return;const [encoded,provided]=value.split('.');const expected=signature(encoded);if(!encoded||!provided||provided.length!==expected.length||!timingSafeEqual(Buffer.from(provided),Buffer.from(expected)))return;const data=JSON.parse(Buffer.from(encoded,'base64url').toString()) as Session;return data.expires>Date.now()?data:undefined;}catch{return;}}
 
+/** The signed-in staff member, re-read from the database so a deactivated account or changed role takes effect immediately. */
+export async function verifiedStaff(){
+  const session=parseSession((await cookies()).get(cookieName)?.value);
+  if(!session)return;
+  const staff=await getStaffById(session.id);
+  return staff&&staff.active?staff:undefined;
+}
+
 export async function isAdmin(){
-  return Boolean(parseSession((await cookies()).get(cookieName)?.value));
+  return Boolean(await verifiedStaff());
 }
 
 export async function startAdminSession(email:string,password:string){
@@ -27,6 +35,5 @@ export async function startAdminSession(email:string,password:string){
 
 export async function endAdminSession(){(await cookies()).delete(cookieName);}
 
-export async function currentStaff(){return parseSession((await cookies()).get(cookieName)?.value);}
-export async function requireAdmin(){const session=await currentStaff();if(!session)throw new Error('Unauthorized');return session;}
-export async function requireRole(...roles:StaffRole[]){const session=await requireAdmin();if(!roles.includes(session.role))throw new Error('You do not have permission for that action.');return session;}
+export async function requireAdmin(){const staff=await verifiedStaff();if(!staff)throw new Error('Unauthorized');return staff;}
+export async function requireRole(...roles:StaffRole[]){const staff=await requireAdmin();if(!roles.includes(staff.role))throw new Error('You do not have permission for that action.');return staff;}

@@ -21,6 +21,7 @@ export function SiteNav({phone,whatsapp}:{phone:string;whatsapp:string}){
       {links.map(([href,key])=><Link key={href} href={path(href)} aria-current={active(href)?'page':undefined} onClick={()=>setOpen(false)}>{t.common[key]}</Link>)}
       <a className="nav-phone" href={`tel:${phone}`}>{t.common.callUs}</a>
       <a className="btn btn-gold btn-sm" href={whatsapp} target="_blank" rel="noopener noreferrer">{t.common.whatsappUs}</a>
+      <a className="nav-admin" href="/admin" rel="nofollow">{t.common.staffSignIn}</a>
     </nav>
     <div className="header-tools">
       <LanguageSwitch target={other} label={t.common.otherLang} href={localePath(other,pathname)} onClick={e=>{e.currentTarget.href=localePath(other,pathname)+window.location.search+window.location.hash;}}/>

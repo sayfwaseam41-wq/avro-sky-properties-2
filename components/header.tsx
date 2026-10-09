@@ -28,7 +28,7 @@ export function Header(){
       <div className="shell header-inner">
         <Link href="/" className="brand" onClick={()=>setOpen(false)}>
           <span className="header-logo">
-            <Image src={site.logo} width={142} height={52} alt={site.name} priority/>
+            {site.logo&&<Image src={site.logo} width={142} height={52} alt={site.name} priority/>}
           </span>
         </Link>
         <div className="header-tools">

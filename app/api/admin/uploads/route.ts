@@ -1,9 +1,9 @@
 import {handleUpload} from '@vercel/blob/client';
 import {NextResponse} from 'next/server';
-import {currentStaff} from '@/lib/admin-auth';
+import {verifiedStaff} from '@/lib/admin-auth';
 
 export async function POST(request:Request){
-  const staff=await currentStaff();
+  const staff=await verifiedStaff();
   if(!staff) return NextResponse.json({error:'Unauthorized'}, {status:401});
 
   const body=await request.json();
