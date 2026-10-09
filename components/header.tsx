@@ -5,11 +5,14 @@ import Image from 'next/image';
 import {usePathname} from 'next/navigation';
 import {Menu,X} from 'lucide-react';
 import {site} from '@/config/site';
+import {AdminLanguageSwitch} from './admin-language-switch';
+import {useAdminI18n} from './admin-i18n-provider';
 export function Header(){
   const [open,setOpen]=useState(false);
   const [scrolled,setScrolled]=useState(false);
   const path=usePathname();
   const isHome=path==='/';
+  const {a}=useAdminI18n();
 
   useEffect(()=>{
     const onScroll=()=>setScrolled(window.scrollY>24);
@@ -28,21 +31,24 @@ export function Header(){
             <Image src={site.logo} width={142} height={52} alt={site.name} priority/>
           </span>
         </Link>
-        <button
-          className="menu-toggle"
-          aria-label={open?'Close navigation':'Open navigation'}
-          aria-expanded={open}
-          aria-controls="main-nav"
-          onClick={()=>setOpen(!open)}
-        >
-          {open?<X/>:<Menu/>}
-        </button>
-        <nav id="main-nav" className={open?'nav open':'nav'} aria-label="Main navigation">
-          {[
-            ['/','Home'],
-            ['/properties','Properties'],
-            ['/request','Find me a property']
-          ].map(([href,label])=>(
+        <div className="header-tools">
+          <AdminLanguageSwitch/>
+          <button
+            className="menu-toggle"
+            aria-label={open?a.header.closeNav:a.header.openNav}
+            aria-expanded={open}
+            aria-controls="main-nav"
+            onClick={()=>setOpen(!open)}
+          >
+            {open?<X/>:<Menu/>}
+          </button>
+        </div>
+        <nav id="main-nav" className={open?'nav open':'nav'} aria-label={a.header.mainNav}>
+          {([
+            ['/',a.header.home],
+            ['/properties',a.header.properties],
+            ['/request',a.header.findMe]
+          ] as const).map(([href,label])=>(
             <Link
               key={href}
               href={href}
@@ -52,14 +58,14 @@ export function Header(){
               {label}
             </Link>
           ))}
-          <a className="nav-phone" href={`tel:${site.phone}`}>Call us</a>
+          <a className="nav-phone" href={`tel:${site.phone}`}>{a.header.callUs}</a>
           <a
             className="button nav-cta"
             href={`https://wa.me/${site.whatsapp.replace(/\D/g,'')}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            WhatsApp us
+            {a.header.whatsappUs}
           </a>
         </nav>
       </div>

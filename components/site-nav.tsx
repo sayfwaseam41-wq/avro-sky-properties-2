@@ -5,6 +5,7 @@ import {usePathname} from 'next/navigation';
 import {localePath,stripLang} from '@/lib/i18n/config';
 import {CloseIcon,MenuIcon} from './icons';
 import {useI18n} from './i18n-provider';
+import {LanguageSwitch} from './language-switch';
 
 const links=[['/','home'],['/properties','properties'],['/request','findMe']] as const;
 
@@ -22,7 +23,7 @@ export function SiteNav({phone,whatsapp}:{phone:string;whatsapp:string}){
       <a className="btn btn-gold btn-sm" href={whatsapp} target="_blank" rel="noopener noreferrer">{t.common.whatsappUs}</a>
     </nav>
     <div className="header-tools">
-      <a className="lang-switch" href={localePath(other,pathname)} hrefLang={other} lang={other} onClick={e=>{e.currentTarget.href=localePath(other,pathname)+window.location.search+window.location.hash;}}>{t.common.otherLang}</a>
+      <LanguageSwitch target={other} label={t.common.otherLang} href={localePath(other,pathname)} onClick={e=>{e.currentTarget.href=localePath(other,pathname)+window.location.search+window.location.hash;}}/>
       <button type="button" className="nav-toggle" aria-expanded={open} aria-controls="site-nav" aria-label={open?t.common.closeMenu:t.common.openMenu} onClick={()=>setOpen(o=>!o)}>{open?<CloseIcon size={24}/>:<MenuIcon size={24}/>}</button>
     </div>
   </>;
