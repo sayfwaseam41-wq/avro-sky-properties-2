@@ -40,7 +40,7 @@ function ClientProfile({client,data,role,onRemind,onClose}:{client:Client;data:D
     {link&&<p><a className="admin-edit" href={link} target="_blank" rel="noreferrer">{p.whatsapp}</a></p>}
     {role==='Admin'&&leases.length>0&&<div className="pro-list">{leases.map(l=><article key={l.id}><strong>{l.propertyName}</strong><span>{usd(l.monthlyRent)}{p.perMonth} · {fmt(p.ends,{date:l.leaseEnd})} · {l.active?p.active:p.ended}</span></article>)}</div>}
     {role==='Admin'&&payments.some(x=>x.status==='Overdue')&&<button type="button" className="admin-edit" onClick={()=>{const x=payments.find(y=>y.status==='Overdue');if(x)onRemind({tenantName:x.tenantName,propertyName:x.propertyName,rentAmount:usd(x.amountDue-x.amountPaid),dueDate:x.dueDate,whatsapp:x.tenantWhatsapp,kind:'overdue'});}}>{p.sendReminder}</button>}
-    <form action={action} className="pro-form" key={client.id}>
+    <form action={action} className="pro-form" key={JSON.stringify(client)}>
       <input type="hidden" name="id" value={client.id}/>
       <label>{p.name}<input name="name" defaultValue={client.name} required/></label>
       <label>{p.type}<select name="clientType" defaultValue={client.clientType}>{['Buyer','Tenant','Landlord','Seller','Investor','Owner'].map(x=><option key={x} value={x}>{p.clientTypes[x]}</option>)}</select></label>
@@ -76,7 +76,7 @@ function LeaseRow({lease}:{lease:Rental}){
 
 function TemplateForm({template,onDone}:{template?:MessageTemplate;onDone:()=>void}){
   const {a}=useAdminI18n();const p=a.pro;const [state,action,pending]=useActionState(addTemplate,initial);
-  return <form action={action} className="pro-form" key={template?.id||'new'}>{template&&<input type="hidden" name="id" value={template.id}/>}<label>{p.templateName}<input name="name" required defaultValue={template?.name} placeholder="Payment due reminder"/></label><label className="wide">{p.message}<textarea name="body" rows={4} required defaultValue={template?.body} placeholder="Hi {tenantName}, your rent of {rentAmount} for {propertyName} is due on {dueDate}."/></label><small className="wide">{p.placeholders} {`{tenantName}`}, {`{propertyName}`}, {`{rentAmount}`}, {`{dueDate}`}, {`{adminName}`}</small><Error message={state.error}/><FormButton>{pending?a.common.saving:template?p.saveChanges:p.addTemplate}</FormButton>{template&&<button type="button" className="button secondary" onClick={onDone}>{a.basic.cancel}</button>}</form>;
+  return <form action={action} className="pro-form" key={template?`${template.id}-${template.name}-${template.body}`:'new'}>{template&&<input type="hidden" name="id" value={template.id}/>}<label>{p.templateName}<input name="name" required defaultValue={template?.name} placeholder="Payment due reminder"/></label><label className="wide">{p.message}<textarea name="body" rows={4} required defaultValue={template?.body} placeholder="Hi {tenantName}, your rent of {rentAmount} for {propertyName} is due on {dueDate}."/></label><small className="wide">{p.placeholders} {`{tenantName}`}, {`{propertyName}`}, {`{rentAmount}`}, {`{dueDate}`}, {`{adminName}`}</small><Error message={state.error}/><FormButton>{pending?a.common.saving:template?p.saveChanges:p.addTemplate}</FormButton>{template&&<button type="button" className="button secondary" onClick={onDone}>{a.basic.cancel}</button>}</form>;
 }
 
 function TemplateRow({template,onEdit}:{template:MessageTemplate;onEdit:()=>void}){
@@ -192,7 +192,7 @@ export function ProAdminDashboard({properties,data,role,adminId,adminName}:{prop
 
     {tab==='Staff'&&role==='Admin'&&<div className="pro-section">
       <StaffForm/>
-      <div className="pro-list">{data.staff.map(s=><StaffRow key={s.id} member={s} isSelf={s.id===adminId}/>)}</div>
+      <div className="pro-list">{data.staff.map(s=><StaffRow key={`${s.id}-${s.role}-${s.active}`} member={s} isSelf={s.id===adminId}/>)}</div>
     </div>}
   </div>
   {reminder&&<ReminderModal target={reminder} templates={data.templates} adminName={adminName} onClose={()=>setReminder(undefined)}/>}
