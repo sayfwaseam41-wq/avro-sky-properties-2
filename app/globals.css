@@ -1966,3 +1966,20 @@ footer {
   .pro-live .pro-sidebar{position:static;height:auto}
   .pro-sidebar-foot,.pro-sidebar-sub{grid-column:1/-1}
 }
+.admin-app .admin-hero-actions .button.secondary{color:var(--navy);border-color:rgba(11,27,51,.4)}
+.admin-app .admin-hero-actions .button.secondary:hover{border-color:var(--gold);color:var(--gold-deep)}
+
+/* Pro dashboard on tablets and phones: the sidebar becomes a compact, scrollable app bar */
+@media (max-width:900px){
+  .pro-live .pro-sidebar{display:flex;flex-direction:row;align-items:center;gap:6px;overflow-x:auto;overflow-y:hidden;padding:10px 16px;position:sticky;top:0;z-index:20;height:auto}
+  .pro-live .pro-sidebar strong{flex:none;font-size:1.35rem;padding:0 12px 0 0}
+  .pro-sidebar-sub{display:none}
+  .pro-live .pro-sidebar button{flex:none;white-space:nowrap;padding:10px 14px;font-size:.9rem}
+  .pro-sidebar-foot{flex:none;margin:0 0 0 auto;padding:0 0 0 12px;border:0;display:flex;flex-direction:row;align-items:center;gap:14px}
+  .pro-live .pro-main{padding:22px 18px 40px}
+  .pro-live .pro-heading h2{margin-bottom:22px}
+}
+@media (max-width:550px){
+  .pro-live .pro-metric{padding:18px 20px}
+  .pro-live .pro-metric strong{margin:6px 0}
+}
