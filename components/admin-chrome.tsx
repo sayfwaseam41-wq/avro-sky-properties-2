@@ -1,5 +1,19 @@
 import Link from 'next/link';
-import {Header} from '@/components/header';
-import {site,whatsappLink} from '@/config/site';
-import {adminDict} from '@/lib/i18n/admin-server';
-export async function AdminChrome({children}:{children:React.ReactNode}){const a=await adminDict();return <><Header/><main id="main">{children}</main><footer><div className="shell footer-grid"><div><Link href="/" className="footer-brand"><span className="logo-lockup"><img src={site.logo} alt=""/><span>{site.name}</span></span></Link><p>{a.footer.tagline}</p><p>{site.address}</p></div><div><h2>{a.footer.explore}</h2><Link href="/properties">{a.footer.allProperties}</Link><Link href="/request">{a.footer.requestProperty}</Link></div><div><h2>{a.footer.talk}</h2><a href={`tel:${site.phone}`}>{a.footer.callUs}</a><a href={`mailto:${site.email}`}>{site.email}</a><a className="footer-whatsapp" href={whatsappLink(`Hello ${site.name}, I would like to ask about a property.`)} target="_blank" rel="noopener noreferrer">{a.footer.whatsapp}</a></div></div><div className="shell footer-bottom"><span>© {new Date().getFullYear()} {site.name}</span></div></footer></>}
+import Image from 'next/image';
+import {site} from '@/config/site';
+import {isAdmin} from '@/lib/admin-auth';
+import {AdminLanguageSwitch} from '@/components/admin-language-switch';
+
+/**
+ * The admin area is its own application: no public header, footer or navigation.
+ * Signed-out visitors get a bare, centred sign-in screen; signed-in pages get a slim app bar
+ * (the Pro dashboard passes bar={false} because its sidebar is the navigation).
+ */
+export async function AdminChrome({children,bar=true}:{children:React.ReactNode;bar?:boolean}){
+  const signedIn=await isAdmin();
+  return <div className={`admin-app ${signedIn?'is-authed':'is-guest'}${bar?'':' no-bar'}`}>
+    {!signedIn&&<div className="admin-guest-lang"><AdminLanguageSwitch/></div>}
+    {signedIn&&bar&&<header className="admin-topbar"><Link href="/admin" className="admin-brand" aria-label={site.name}>{site.logo?<Image src={site.logo} width={142} height={52} alt={site.name} priority/>:<strong>{site.name}</strong>}</Link><AdminLanguageSwitch/></header>}
+    <main id="main">{children}</main>
+  </div>;
+}

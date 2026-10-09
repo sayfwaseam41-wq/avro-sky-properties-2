@@ -6,6 +6,7 @@ import type {Activity,Client,MessageTemplate,Payment,Rental,Sale,StaffMember} fr
 import type {Property} from '@/lib/property';
 import {site} from '@/config/site';
 import {renderReminder,whatsappUrl} from '@/lib/reminder';
+import {AdminLanguageSwitch} from './admin-language-switch';
 import {useAdminI18n} from './admin-i18n-provider';
 
 type Tab='Dashboard'|'Properties'|'Clients'|'Rentals'|'Sales & profit'|'Messages'|'Staff';
@@ -116,7 +117,7 @@ function ReminderModal({target,templates,adminName,onClose}:{target:ReminderTarg
     </div></div></div>;
 }
 
-export function ProAdminDashboard({properties,data,role,adminId,adminName}:{properties:Property[];data:Data;role:'Admin'|'Agent';adminId:string;adminName:string}){
+export function ProAdminDashboard({properties,data,role,adminId,adminName,actions}:{properties:Property[];data:Data;role:'Admin'|'Agent';adminId:string;adminName:string;actions:React.ReactNode}){
   const {a,fmt}=useAdminI18n();const t=a.pro;
   const [tab,setTab]=useState<Tab>('Dashboard');
   const [reminder,setReminder]=useState<ReminderTarget>();
@@ -147,7 +148,7 @@ export function ProAdminDashboard({properties,data,role,adminId,adminName}:{prop
   const editingTemplate=data.templates.find(x=>x.id===templateId);
   const remindLease=(r:Rental)=>setReminder({tenantName:r.tenantName,propertyName:r.propertyName,rentAmount:usd(r.monthlyRent),dueDate:r.leaseEnd,whatsapp:r.tenantWhatsapp,kind:'lease'});
 
-  return <div className="pro-live"><aside className="pro-sidebar"><strong>{site.name}</strong>{nav.map(item=><button key={item} className={tab===item?'selected':''} onClick={()=>go(item)}>{t.tabs[item]}</button>)}</aside><div className="pro-main"><div className="pro-heading"><div><p className="kicker">{t.kickerMgmt}</p><h2>{t.tabs[tab]}</h2></div><span>{fmt(t.access,{role:t.roles[role]})}</span></div>
+  return <div className="pro-live"><aside className="pro-sidebar"><strong>{site.name}</strong><small className="pro-sidebar-sub">{t.title}</small>{nav.map(item=><button key={item} className={tab===item?'selected':''} onClick={()=>go(item)}>{t.tabs[item]}</button>)}<div className="pro-sidebar-foot"><AdminLanguageSwitch/>{actions}</div></aside><div className="pro-main"><div className="pro-heading"><div><p className="kicker">{t.kickerMgmt}</p><h2>{t.tabs[tab]}</h2></div><span>{fmt(t.access,{role:t.roles[role]})}</span></div>
 
     {tab==='Dashboard'&&<>
       {role==='Admin'?<>
