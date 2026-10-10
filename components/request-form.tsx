@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {CheckIcon} from './icons';
 import {BudgetField} from './budget-field';
 import {useI18n} from './i18n-provider';
-import {site,whatsappLink} from '@/config/site';
+import {whatsappLink,siteName} from '@/config/site';
 import {propertyTypes} from '@/lib/property';
 import {areaName, canonicalArea} from '@/lib/i18n/areas';
 import {leadSummary,type Lead} from '@/lib/lead-summary';
@@ -88,7 +88,7 @@ export function RequestForm({areas}: {areas: string[]}) {
       <section className="success-panel" aria-live="polite">
         <span className="success-icon"><CheckIcon size={30}/></span>
         <h2>{fmt(f.thanks, {name: done.name})}</h2>
-        <p>{fmt(f.thanksText, {site: site.name})}</p>
+        <p>{fmt(f.thanksText, {site: siteName(lang)})}</p>
         <div className="success-actions">
           <Link href={path('/properties')} className="btn btn-outline">{f.browse}</Link>
           <a className="btn btn-gold" target="_blank" rel="noopener noreferrer" href={whatsappLink(summary)}>{f.continueWa}</a>
@@ -187,7 +187,7 @@ export function RequestForm({areas}: {areas: string[]}) {
         <input tabIndex={-1} autoComplete="off" value={form.website} onChange={e => change('website', e.target.value)} />
       </label>
 
-      <p className="form-note full">{fmt(f.note, {site: site.name})}</p>
+      <p className="form-note full">{fmt(f.note, {site: siteName(lang)})}</p>
 
       <button className="btn btn-gold btn-lg full" disabled={pending}>
         {pending ? f.sending : f.submit}

@@ -12,7 +12,7 @@ export async function POST(request:Request){
       body,
       request,
       onBeforeGenerateToken:async pathname=>{
-        if(!pathname.startsWith('properties/')) throw new Error('Invalid upload path.');
+        if(!pathname.startsWith('properties/')&&!pathname.startsWith('content/')) throw new Error('Invalid upload path.');
         return {
           allowedContentTypes:['image/jpeg','image/png','image/webp','image/avif'],
           maximumSizeInBytes:15*1024*1024,

@@ -1988,3 +1988,15 @@ footer {
 .admin-login-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
 .admin-home-link{color:var(--muted);font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .admin-home-link:hover{color:var(--gold-deep)}
+
+.admin-form fieldset { border: 1px solid var(--line, #e4dfd2); border-radius: 10px; padding: 12px 14px; margin: 0; }
+.admin-form legend { padding: 0 6px; font-size: .8rem; font-weight: 600; }
+.admin-amenities { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px 16px; }
+.admin-form .field small { color: #6b7280; font-size: .75rem; }
+
+/* Arabic and Kurdish text boxes on admin forms */
+.admin-translations{grid-column:1/-1;border:1px dashed var(--line,#cfd6e4);border-radius:12px;padding:.75rem 1rem;background:rgba(0,0,0,.02)}
+.admin-translations>summary{cursor:pointer;font-weight:600}
+.admin-translations-hint{margin:.5rem 0 .75rem;font-size:.9rem;opacity:.75}
+.admin-translation-lang{border:0;margin:0 0 .75rem;padding:0;display:grid;gap:.75rem}
+.admin-translation-lang legend{font-weight:600;padding:0;margin-bottom:.4rem}

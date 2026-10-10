@@ -25,3 +25,4 @@ export const HouseIcon=(p:P)=><Icon {...p}><path d="m3 11 9-7 9 7M5 10v11h14V10M
 export const VillaIcon=(p:P)=><Icon {...p}><path d="M2 21h20M4 21V12l5-4 5 4v9M14 21v-7l4-3 4 3v7M7 21v-4h4v4"/></Icon>;
 export const LandIcon=(p:P)=><Icon {...p}><path d="M3 18 9 6l4 8 3-5 5 9M3 21h18"/></Icon>;
 export const OfficeIcon=(p:P)=><Icon {...p}><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-3h4v3"/></Icon>;
+export const ShareIcon=(p:P)=><Icon {...p}><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.1M8.3 13.3l7.4 4.1"/></Icon>;

@@ -1,6 +1,6 @@
 import {RequestForm} from '@/components/request-form';
 import {CheckIcon,WhatsAppIcon} from '@/components/icons';
-import {site,whatsappLink} from '@/config/site';
+import {whatsappLink,siteName} from '@/config/site';
 import {getCachedProperties} from '@/lib/public-data';
 import {areaList} from '@/lib/property';
 import {fmt} from '@/lib/i18n/config';
@@ -26,7 +26,7 @@ export default async function Request({params}:LangParams){
         <aside className="request-side">
           <h2>{t.how}</h2>
           <ul className="promises">{t.steps.map(({t:title,d})=><li key={title}><span className="tick"><CheckIcon size={18}/></span><div><b>{title}</b><p>{d}</p></div></li>)}</ul>
-          <a className="btn btn-outline" href={whatsappLink(fmt(t.waLooking,{site:site.name}))} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={20}/>{t.prefer}</a>
+          <a className="btn btn-outline" href={whatsappLink(fmt(t.waLooking,{site:siteName(lang)}))} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={20}/>{t.prefer}</a>
         </aside>
         <RequestForm areas={areas}/>
       </div>

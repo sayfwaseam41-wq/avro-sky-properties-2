@@ -1,10 +1,14 @@
-export const langs=['en','ar'] as const;
+export const langs=['en','ar','ckb'] as const;
 export type Lang=(typeof langs)[number];
 export const defaultLang:Lang='en';
 export const isLang=(value:string):value is Lang=>(langs as readonly string[]).includes(value);
-export const dirOf=(lang:Lang)=>lang==='ar'?'rtl':'ltr';
+export const dirOf=(lang:Lang)=>lang==='en'?'ltr':'rtl';
+/** Short label each language shows on its own switch button. */
+export const langLabel:Record<Lang,string>={en:'EN',ar:'عربي',ckb:'کوردی'};
+/** Open Graph locale for each language (Kurdish Sorani, Iraq). */
+export const ogLocale:Record<Lang,string>={en:'en_US',ar:'ar_IQ',ckb:'ckb_IQ'};
 
-/** English lives at the site root and other languages under a prefix: localePath('ar','/properties') -> /ar/properties */
+/** English lives at the site root and other languages under a prefix: localePath('ar','/properties') -> /ar/properties, localePath('ckb','/properties') -> /ckb/properties */
 export function localePath(lang:Lang,path:string){
   if(lang===defaultLang)return path;
   return path==='/'?`/${lang}`:`/${lang}${path}`;

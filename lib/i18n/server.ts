@@ -1,6 +1,6 @@
 import 'server-only';
 import {notFound} from 'next/navigation';
-import {isLang,localePath,type Lang} from './config';
+import {isLang,langs,localePath,type Lang} from './config';
 
 export type LangParams={params:Promise<{lang:string}>};
 
@@ -13,5 +13,5 @@ export async function langFrom(params:Promise<{lang:string}>):Promise<Lang>{
 
 /** Canonical and hreflang alternates for a page, given its language-free path. */
 export function alternates(lang:Lang,path:string){
-  return {canonical:localePath(lang,path),languages:{en:localePath('en',path),ar:localePath('ar',path),'x-default':localePath('en',path)}};
+  return {canonical:localePath(lang,path),languages:{...Object.fromEntries(langs.map(l=>[l,localePath(l,path)])),'x-default':localePath('en',path)}};
 }

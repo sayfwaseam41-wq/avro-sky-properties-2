@@ -1,7 +1,7 @@
 'use client';
 import {useState} from 'react';
 import Image from 'next/image';
-import {fmt} from '@/lib/i18n/config';
+import {dirOf,fmt} from '@/lib/i18n/config';
 import {ChevronLeftIcon,ChevronRightIcon} from './icons';
 import {useI18n} from './i18n-provider';
 
@@ -10,9 +10,10 @@ export function Gallery({photos}:{photos:{url:string;alt:string}[]}){
   const g=t.gallery;
   const [active,setActive]=useState(0);
   const go=(delta:number)=>setActive(a=>(a+delta+photos.length)%photos.length);
-  // Arrow keys follow the reading direction: in Arabic the left arrow goes to the next photo.
-  const forward=lang==='ar'?'ArrowLeft':'ArrowRight';
-  const back=lang==='ar'?'ArrowRight':'ArrowLeft';
+  // Arrow keys follow the reading direction: in right-to-left languages (Arabic, Kurdish) the left arrow goes to the next photo.
+  const rtl=dirOf(lang)==='rtl';
+  const forward=rtl?'ArrowLeft':'ArrowRight';
+  const back=rtl?'ArrowRight':'ArrowLeft';
   if(!photos.length)return <div className="gallery gallery-empty"><span>{g.soon}</span></div>;
   return <section className="gallery" aria-label={g.label} onKeyDown={e=>{if(e.key===forward){e.preventDefault();go(1);}if(e.key===back){e.preventDefault();go(-1);}}}>
     <div className="gallery-main">

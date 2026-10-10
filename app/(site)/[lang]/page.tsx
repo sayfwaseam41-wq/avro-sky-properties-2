@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import {getCachedProperties} from '@/lib/public-data';
+import {getCachedProperties,getCachedReviews,localProperties,localReviews} from '@/lib/public-data';
+import {Reviews} from '@/components/reviews';
 import {areaList,featuredProperties,type Property} from '@/lib/property';
 import {PropertyCard} from '@/components/property-card';
 import {HeroArt} from '@/components/hero-art';
 import {HeroHeadline,headlineWordCount} from '@/components/hero-headline';
 import {HomeSearch} from '@/components/home-search';
 import {ApartmentIcon,ArrowIcon,CheckIcon,HouseIcon,LandIcon,OfficeIcon,PhoneIcon,VillaIcon,WhatsAppIcon} from '@/components/icons';
-import {site,whatsappLink} from '@/config/site';
+import {site,whatsappLink,siteName} from '@/config/site';
 import {fmt,localePath} from '@/lib/i18n/config';
 import {areaName} from '@/lib/i18n/areas';
 import {getDict} from '@/lib/i18n/dict';
@@ -27,7 +28,8 @@ export default async function Home({params}:LangParams){
   const t=getDict(lang);
   const h=t.home;
   const to=(path:string)=>localePath(lang,path);
-  const properties:Property[]=await getCachedProperties().catch(()=>[]);
+  const properties:Property[]=localProperties(await getCachedProperties().catch(()=>[]),lang);
+  const reviews=localReviews(await getCachedReviews().catch(()=>[]),lang);
   const featured=featuredProperties(properties).slice(0,6);
   const areas=areaList(properties);
   const counts=new Map<string,number>();for(const p of properties)counts.set(p.type,(counts.get(p.type)||0)+1);
@@ -41,7 +43,7 @@ export default async function Home({params}:LangParams){
         <p className="hero-lede">{h.lede}</p>
         <div className="hero-actions">
           <Link className="btn btn-gold btn-lg" href={to('/properties')}>{h.browse}<ArrowIcon size={18}/></Link>
-          <a className="btn btn-ghost btn-lg" href={whatsappLink(fmt(h.waHelp,{site:site.name}))} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={20}/>{h.chatWa}</a>
+          <a className="btn btn-ghost btn-lg" href={whatsappLink(fmt(h.waHelp,{site:siteName(lang)}))} target="_blank" rel="noopener noreferrer"><WhatsAppIcon size={20}/>{h.chatWa}</a>
         </div>
         {properties.length>0&&<div className="hero-stat" style={{"--hero-words":headlineWordCount(h.h1a,h.h1em)} as React.CSSProperties}><b>{properties.length}</b><span>{h.statLabel}</span></div>}
       </div>
@@ -76,6 +78,8 @@ export default async function Home({params}:LangParams){
         <ol className="steps" aria-label={h.stepsLabel}>{h.steps.map(({t:title,d},i)=><li key={title}><span>{String(i+1).padStart(2,'0')}</span><div><b>{title}</b><p>{d}</p></div></li>)}</ol>
       </div>
     </section>
+
+    <Reviews reviews={reviews} t={t}/>
 
     <section className="cta" aria-labelledby="cta-h">
       <div className="wrap cta-inner">

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import {site,whatsappLink} from '@/config/site';
+import {site,whatsappLink,siteName} from '@/config/site';
 import {fmt,localePath,type Lang} from '@/lib/i18n/config';
 import {areaName} from '@/lib/i18n/areas';
 import type {Dict} from '@/lib/i18n/en';
@@ -9,6 +9,9 @@ import {AreaIcon,BathIcon,BedIcon,PinIcon,WhatsAppIcon} from './icons';
 
 const money=new Intl.NumberFormat(site.locale,{style:'currency',currency:site.currency,maximumFractionDigits:0});
 export function priceLabel(p:Pick<Property,'price'|'listingType'>){return money.format(p.price);}
+/** Short price for map pins, for example $118K. */
+const compactMoney=new Intl.NumberFormat(site.locale,{style:'currency',currency:site.currency,notation:'compact',maximumFractionDigits:1});
+export function pinPriceLabel(p:Pick<Property,'price'>){return compactMoney.format(p.price);}
 
 type Props={property:Property;lang:Lang;t:Dict;eager?:boolean;heading?:'h2'|'h3'};
 
@@ -36,7 +39,7 @@ export function PropertyCard({property:p,lang,t,eager=false,heading:Heading='h3'
       </ul>
       <div className="card-actions">
         <Link className="btn btn-outline btn-sm" href={href}>{c.viewDetails}</Link>
-        <a className="icon-btn" href={whatsappLink(fmt(c.waProperty,{site:site.name,title:p.title,area:areaName(lang,p.area),id:p.id}))} target="_blank" rel="noopener noreferrer" aria-label={fmt(c.enquire,{title:p.title})}><WhatsAppIcon size={20}/></a>
+        <a className="icon-btn" href={whatsappLink(fmt(c.waProperty,{site:siteName(lang),title:p.title,area:areaName(lang,p.area),id:p.id}))} target="_blank" rel="noopener noreferrer" aria-label={fmt(c.enquire,{title:p.title})}><WhatsAppIcon size={20}/></a>
       </div>
     </div>
   </article>;
