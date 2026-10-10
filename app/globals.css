@@ -2005,3 +2005,13 @@ footer {
 .lang-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .lang-group[aria-busy="true"] .lang-switch{opacity:.6;pointer-events:none}
 .admin-topbar .lang-group{margin-inline-start:auto}
+
+/* Admin location picker */
+.picker{display:grid;gap:8px}
+.picker-map{position:relative;height:320px;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--ivory)}
+.picker-canvas{position:absolute;inset:0;z-index:0;cursor:crosshair}
+.picker-status{position:absolute;inset:0;z-index:1;display:grid;place-items:center;margin:0;padding:16px;text-align:center;color:#6b7280;pointer-events:none}
+.picker-row{display:flex;gap:8px;align-items:center}
+.picker-row input{flex:1;min-width:0}
+.picker-row .ghost{padding:10px 16px;border:1px solid var(--line);border-radius:10px;background:var(--ivory);color:var(--ink);font:inherit;cursor:pointer}
+.picker-row .ghost:disabled{opacity:.5;cursor:default}

@@ -26,7 +26,7 @@ type LeafletApi={
 type Control={addTo(map:LeafletMap):Control};
 
 let loading:Promise<LeafletApi>|undefined;
-function loadLeaflet():Promise<LeafletApi>{
+export function loadLeaflet():Promise<LeafletApi>{
   const w=window as unknown as {L?:LeafletApi};
   if(w.L)return Promise.resolve(w.L);
   loading??=new Promise<LeafletApi>((resolve,reject)=>{
