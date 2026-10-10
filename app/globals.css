@@ -2000,3 +2000,8 @@ footer {
 .admin-translations-hint{margin:.5rem 0 .75rem;font-size:.9rem;opacity:.75}
 .admin-translation-lang{border:0;margin:0 0 .75rem;padding:0;display:grid;gap:.75rem}
 .admin-translation-lang legend{font-weight:600;padding:0;margin-bottom:.4rem}
+
+/* The language pills sit together instead of being spread across the bar */
+.lang-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lang-group[aria-busy="true"] .lang-switch{opacity:.6;pointer-events:none}
+.admin-topbar .lang-group{margin-inline-start:auto}
