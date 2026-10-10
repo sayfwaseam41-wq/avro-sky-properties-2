@@ -35,7 +35,7 @@ export function PropertyCard({property:p,lang,t,eager=false,heading:Heading='h3'
       <ul className="specs" aria-label={c.keyDetails}>
         {p.type!=='Land'&&<li><BedIcon size={18}/>{p.bedrooms} <span>{p.bedrooms===1?c.bed:c.beds}</span></li>}
         {p.type!=='Land'&&<li><BathIcon size={18}/>{p.bathrooms} <span>{p.bathrooms===1?c.bath:c.baths}</span></li>}
-        <li><AreaIcon size={18}/><bdi dir="ltr">{p.size} m²</bdi></li>
+        <li><AreaIcon size={18}/><bdi dir={lang==='en'?'ltr':'rtl'}>{p.size} {t.extras.sqm}</bdi></li>
       </ul>
       <div className="card-actions">
         <Link className="btn btn-outline btn-sm" href={href}>{c.viewDetails}</Link>

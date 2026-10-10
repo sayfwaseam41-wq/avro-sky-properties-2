@@ -60,7 +60,7 @@ export default async function Detail({params}:Params){
           <ul className="facts" aria-label={d.facts}>
             {p.type!=='Land'&&<li><BedIcon size={24}/><b>{p.bedrooms}</b><span>{p.bedrooms===1?d.bedroom:d.bedrooms}</span></li>}
             {p.type!=='Land'&&<li><BathIcon size={24}/><b>{p.bathrooms}</b><span>{p.bathrooms===1?d.bathroom:d.bathrooms}</span></li>}
-            <li><AreaIcon size={24}/><b><bdi dir="ltr">{p.size} m²</bdi></b><span>{d.size}</span></li>
+            <li><AreaIcon size={24}/><b><bdi dir={lang==='en'?'ltr':'rtl'}>{p.size} {t.extras.sqm}</bdi></b><span>{d.size}</span></li>
             <li><HouseIcon size={24}/><b>{typeName}</b><span>{d.type}</span></li>
           </ul>
           {p.amenities?.length?<><h2>{t.extras.amenities}</h2><ul className="amenities">{p.amenities.map(key=><li key={key}><CheckIcon size={18}/>{t.extras.amenityNames[key]??key}</li>)}</ul></>:null}
