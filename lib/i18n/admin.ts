@@ -1,11 +1,12 @@
 import type {Lang} from './config';
+import {adminCkb} from './admin-ckb';
 
 /** Interface text for the admin area only. Property, client and financial data is never translated. {site} is replaced with the company name. */
 export const adminCookie='avro_admin_lang';
 
 export const adminEn={
   meta:{offers:'Admin offers',basic:'Basic property admin',pro:'Pro management preview'},
-  common:{home:'Home',allSystems:'All systems',private:'Private area',signOut:'Sign out',email:'Email',password:'Password',signIn:'Sign in',signingIn:'Signing in…',saving:'Saving…',close:'Close',otherLang:'عربي'},
+  common:{home:'Home',allSystems:'All systems',private:'Private area',signOut:'Sign out',email:'Email',password:'Password',signIn:'Sign in',signingIn:'Signing in…',saving:'Saving…',close:'Close'},
   header:{home:'Home',properties:'Properties',findMe:'Find me a property',callUs:'Call us',whatsappUs:'WhatsApp us',openNav:'Open navigation',closeNav:'Close navigation',mainNav:'Main navigation'},
   footer:{tagline:'Property. People. Possibility.',explore:'Explore',allProperties:'All properties',requestProperty:'Request a property',talk:'Let’s talk',callUs:'Call us',whatsapp:'WhatsApp'},
   offers:{loginTitle:'{site} admin',loginText:'Sign in to view the two management-system options.',title:'Choose your system',text:'Compare the simple property manager with the full real-estate management system.',offer1:'Offer 01',basicTitle:'Basic property admin',basicText:'Manage property listings, availability, public visibility, descriptions, prices, and photos.',basicLi:['Add, edit, and remove listings','Upload property photos','Publish available listings to the website'],basicOpen:'Open Basic system',offer2:'Offer 02',proTitle:'Pro company management',proText:'A complete operations workspace for properties, clients, rent, payments, sales, and team work.',proLi:['Rental payment reminders and WhatsApp messages','Sales, commissions, expenses, and profit tracking','Client records, staff roles, and company dashboard'],proOpen:'Open Pro preview',proLocked:'Not available on your plan',proLockedText:'The Pro system is not included in your current plan.'},
@@ -37,7 +38,7 @@ export type AdminDict=typeof adminEn;
 
 export const adminAr:AdminDict={
   meta:{offers:'عروض الإدارة',basic:'إدارة العقارات الأساسية',pro:'معاينة الإدارة المتقدمة'},
-  common:{home:'الرئيسية',allSystems:'جميع الأنظمة',private:'منطقة خاصة',signOut:'تسجيل الخروج',email:'البريد الإلكتروني',password:'كلمة المرور',signIn:'تسجيل الدخول',signingIn:'جارٍ تسجيل الدخول…',saving:'جارٍ الحفظ…',close:'إغلاق',otherLang:'EN'},
+  common:{home:'الرئيسية',allSystems:'جميع الأنظمة',private:'منطقة خاصة',signOut:'تسجيل الخروج',email:'البريد الإلكتروني',password:'كلمة المرور',signIn:'تسجيل الدخول',signingIn:'جارٍ تسجيل الدخول…',saving:'جارٍ الحفظ…',close:'إغلاق'},
   header:{home:'الرئيسية',properties:'العقارات',findMe:'ابحث لي عن عقار',callUs:'اتصل بنا',whatsappUs:'تواصل عبر واتساب',openNav:'فتح القائمة',closeNav:'إغلاق القائمة',mainNav:'القائمة الرئيسية'},
   footer:{tagline:'عقار. ناس. إمكانيات.',explore:'استكشف',allProperties:'جميع العقارات',requestProperty:'اطلب عقاراً',talk:'لنتحدث',callUs:'اتصل بنا',whatsapp:'واتساب'},
   offers:{loginTitle:'إدارة {site}',loginText:'سجّل الدخول لعرض خيارَي نظام الإدارة.',title:'اختر نظامك',text:'قارن بين مدير العقارات البسيط ونظام إدارة العقارات المتكامل.',offer1:'العرض 01',basicTitle:'إدارة العقارات الأساسية',basicText:'أدِر قوائم العقارات والتوفر والظهور للعامة والأوصاف والأسعار والصور.',basicLi:['إضافة القوائم وتعديلها وحذفها','رفع صور العقارات','نشر القوائم المتاحة على الموقع'],basicOpen:'افتح النظام الأساسي',offer2:'العرض 02',proTitle:'إدارة الشركة المتقدمة',proText:'مساحة عمل متكاملة للعقارات والعملاء والإيجارات والدفعات والمبيعات وعمل الفريق.',proLi:['تذكيرات دفع الإيجار ورسائل واتساب','تتبع المبيعات والعمولات والمصاريف والأرباح','سجلات العملاء وأدوار الموظفين ولوحة الشركة'],proOpen:'افتح المعاينة المتقدمة',proLocked:'غير متاح في خطتك',proLockedText:'النظام المتقدم غير مشمول في خطتك الحالية.'},
@@ -60,9 +61,9 @@ export const adminAr:AdminDict={
     name:'الاسم',type:'النوع',phone:'الهاتف',whatsapp:'واتساب',email:'البريد الإلكتروني',address:'العنوان',notes:'ملاحظات',addClient:'إضافة عميل',openProfile:'فتح الملف',clientProfile:'ملف العميل',clientSince:'عميل منذ',leasesLabel:'العقود الجارية',outstanding:'إيجار مستحق',purchasesLabel:'المشتريات',saveChanges:'حفظ التغييرات',removeClient:'إزالة العميل',confirmRemoveClient:'هل تريد إزالة هذا العميل من سجلاتك؟',
     property:'العقار',tenant:'المستأجر',choose:'اختر',monthlyRent:'الإيجار الشهري',deposit:'التأمين',leaseStarts:'بداية العقد',leaseEnds:'نهاية العقد',dueDay:'يوم الاستحقاق',payMethod:'طريقة الدفع',payMethodPh:'نقداً / تحويل',createLease:'إنشاء عقد',
     tracker:'متابعة الدفعات',tenantProp:'المستأجر / العقار',due:'الاستحقاق',amount:'المبلغ',status:'الحالة',action:'الإجراء',save:'حفظ',paidInFull:'مدفوع بالكامل',paidFor:'المبلغ المدفوع من {name}',leases:'العقود',perMonth:'/شهر',dueOnDay:'الاستحقاق في اليوم {day}',ends:'ينتهي {date}',ended:'منتهٍ',endLease:'إنهاء العقد',confirmEndLease:'هل تريد إنهاء هذا العقد؟ لن تُتابَع إيجارات جديدة له.',
-    sendReminder:'تذكير واتساب',reminderTitle:'تذكير واتساب',template:'القالب',message:'الرسالة',noWhatsapp:'لا يوجد رقم واتساب أو هاتف لهذا العميل.',openWhatsapp:'افتح واتساب',copy:'نسخ الرسالة',copied:'تم النسخ',defaultReminder:'Hi {tenantName}, your rent of {rentAmount} for {propertyName} is due on {dueDate}.',
+    sendReminder:'تذكير واتساب',reminderTitle:'تذكير واتساب',template:'القالب',message:'الرسالة',noWhatsapp:'لا يوجد رقم واتساب أو هاتف لهذا العميل.',openWhatsapp:'افتح واتساب',copy:'نسخ الرسالة',copied:'تم النسخ',defaultReminder:'مرحباً {tenantName}، إيجارك البالغ {rentAmount} للعقار {propertyName} مستحق في {dueDate}.',
     templateName:'اسم القالب',placeholders:'الحقول المتاحة:',addTemplate:'إضافة قالب',confirmDeleteTemplate:'هل تريد حذف قالب الرسالة هذا؟',
     saleType:'نوع البيع',buyer:'المشتري',agent:'الوسيط',notRecorded:'غير مسجّل',purchase:'مبلغ الشراء',saleAmount:'مبلغ البيع',expenses:'المصاريف',commission:'العمولة',revenue:'إيرادات المبيعات',soldDate:'تاريخ البيع',recordSale:'تسجيل البيع',netProfitOf:'صافي الربح',sold:'بيع في {date}',sale:'البيع',
     role:'الدور',passwordL:'كلمة المرور',newPassword:'كلمة مرور جديدة (اختياري)',addStaff:'إضافة موظف',active:'نشط',inactive:'غير نشط',you:'أنت'},
 };
-export const adminDictFor=(lang:Lang):AdminDict=>lang==='ar'?adminAr:adminEn;
+export const adminDictFor=(lang:Lang):AdminDict=>lang==='ar'?adminAr:lang==='ckb'?adminCkb:adminEn;

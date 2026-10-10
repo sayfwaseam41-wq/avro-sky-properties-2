@@ -2,7 +2,7 @@
 export const en={
   about:'Find your next home, workspace, or investment in Duhok. Explore clear property details, check current availability, and speak directly with our team about the places that interest you.',
   siteTitle:'Apartments, Houses & Land in Duhok',
-  common:{skip:'Skip to content',home:'Home',properties:'Properties',findMe:'Find me a property',callUs:'Call us',whatsappUs:'WhatsApp us',openMenu:'Open menu',closeMenu:'Close menu',mainNav:'Main',tagline:'Apartments · Houses · Lands',address:'Duhok, Kurdistan Region, Iraq',otherLang:'عربي',staffSignIn:'Staff sign in',projects:'Projects',aboutUs:'About',waGeneral:'Hello {site}, I would like to ask about a property.',waChat:'Chat with us on WhatsApp',homeAria:'{site} home'},
+  common:{skip:'Skip to content',home:'Home',properties:'Properties',findMe:'Find me a property',callUs:'Call us',whatsappUs:'WhatsApp us',openMenu:'Open menu',closeMenu:'Close menu',mainNav:'Main',tagline:'Apartments · Houses · Lands',address:'Duhok, Kurdistan Region, Iraq',staffSignIn:'Staff sign in',projects:'Projects',aboutUs:'About',waGeneral:'Hello {site}, I would like to ask about a property.',waChat:'Chat with us on WhatsApp',homeAria:'{site} home'},
   types:{Apartment:'Apartment',House:'House',Villa:'Villa',Land:'Land',Office:'Office'} as Record<string,string>,
   typesPlural:{Apartment:'Apartments',House:'Houses',Villa:'Villas',Land:'Land',Office:'Offices'} as Record<string,string>,
   card:{forRent:'For rent',forSale:'For sale',bed:'bed',beds:'beds',bath:'bath',baths:'baths',perMonth:'/ month',viewDetails:'View details',enquire:'Enquire about {title} on WhatsApp',keyDetails:'Key details',areaIn:'{area}, Duhok',waProperty:'Hello {site}, I’m interested in {title} in {area} (reference {id}).'},

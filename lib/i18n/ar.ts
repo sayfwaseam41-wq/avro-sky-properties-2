@@ -4,7 +4,7 @@ import type {Dict} from './en';
 export const ar:Dict={
   about:'اعثر على منزلك أو مكتبك أو استثمارك القادم في دهوك. تصفّح تفاصيل واضحة للعقارات، وتحقّق من التوفر الحالي، وتحدّث مباشرة مع فريقنا عن العقارات التي تهمك.',
   siteTitle:'شقق ومنازل وأراضٍ في دهوك',
-  common:{skip:'انتقل إلى المحتوى',home:'الرئيسية',properties:'العقارات',findMe:'ابحث لي عن عقار',callUs:'اتصل بنا',whatsappUs:'تواصل عبر واتساب',openMenu:'فتح القائمة',closeMenu:'إغلاق القائمة',mainNav:'القائمة الرئيسية',tagline:'شقق · منازل · أراضٍ',address:'دهوك، إقليم كردستان، العراق',otherLang:'EN',staffSignIn:'دخول الموظفين',projects:'المشاريع',aboutUs:'من نحن',waGeneral:'مرحباً {site}، أودّ الاستفسار عن عقار.',waChat:'تحدّث معنا عبر واتساب',homeAria:'الصفحة الرئيسية لـ {site}'},
+  common:{skip:'انتقل إلى المحتوى',home:'الرئيسية',properties:'العقارات',findMe:'ابحث لي عن عقار',callUs:'اتصل بنا',whatsappUs:'تواصل عبر واتساب',openMenu:'فتح القائمة',closeMenu:'إغلاق القائمة',mainNav:'القائمة الرئيسية',tagline:'شقق · منازل · أراضٍ',address:'دهوك، إقليم كردستان، العراق',staffSignIn:'دخول الموظفين',projects:'المشاريع',aboutUs:'من نحن',waGeneral:'مرحباً {site}، أودّ الاستفسار عن عقار.',waChat:'تحدّث معنا عبر واتساب',homeAria:'الصفحة الرئيسية لـ {site}'},
   types:{Apartment:'شقة',House:'منزل',Villa:'فيلا',Land:'أرض',Office:'مكتب'},
   typesPlural:{Apartment:'شقق',House:'منازل',Villa:'فلل',Land:'أراضٍ',Office:'مكاتب'},
   card:{forRent:'للإيجار',forSale:'للبيع',bed:'غرفة نوم',beds:'غرف نوم',bath:'حمام',baths:'حمامات',perMonth:'/ شهرياً',viewDetails:'عرض التفاصيل',enquire:'استفسر عن {title} عبر واتساب',keyDetails:'التفاصيل الرئيسية',areaIn:'{area}، دهوك',waProperty:'مرحباً {site}، أنا مهتم بـ {title} في {area} (الرقم المرجعي {id}).'},
